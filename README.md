@@ -35,6 +35,37 @@ Fortunately the fix is as easy as just deleting the extraneous `Id` property fro
 Then to prevent similar errors in the future, we're going add `<TreatWarningsAsErrors>true</TreatWarningsAsErrors>` to each csproj file.
 
 
+## Round 2 - Detecting Unused Private Fields with Static Analysis
+
+While looking at `PackingList` in Visual Studio, we notice that `Localization` is grayed out. Checking the compiler mesages, we see
+
+```
+IDE0052	Private member 'PackingList._localization' can be removed as the value assigned to it is never read	PackIT.Domain
+```
+
+Ok, let's do that. But before we do that, we should make it into a compiler error so no other unused fields slip into the code.
+
+To do this, we create a `.editorconfig` file and place it in the `src` folder. By putting it here, all projects below it will inherit the same settings. This avoids the problem of having to copy and paste files into each project.
+
+Rather than creating it from scratch, we used the "Add New Item" menu and selected the editor config file with ".NET" in its name. This adds a bunch of C# and VB sections with fairly reasonable defaults.  
+
+Inside the `[*.{cs,vb}]` of the file we add these two lines.
+
+```
+dotnet_diagnostic.CA1823.severity=error
+dotnet_diagnostic.IDE0052.severity=error
+```
+
+Rebuilding the project, we see that there is an unused parameter. So we'll have the compiler check for that as well.
+
+```
+dotnet_diagnostic.IDE0060.severity=error
+```
+
+In production grade code, there are two ways to handle static analysis.
+
+1. Turn on the minimal rules at first. Then slowly add additional rules over time as problems are seen.
+2. Turn on all the rules at first. Then remove the rules that are unreliable or not applicable.
 
 # PackIT
 PackIT is simple "packing list app" built on top of clean architecture and CQRS.
