@@ -22,9 +22,9 @@ Most of the other routes are also bad. Consider this example,
 public async Task<IActionResult> Put([FromBody] PackItem command)
 ```
 
-Since the `command` parameter is marked as coming from the body, the `packingListId` and `name` values are going to be semi-ignored. The client has to provide them or the routing will fail and they will get a 404. But the `Put` method will never actually see the values and instead has to read them from the requests's body, which the client had to also populate.
+Since the `command` parameter is marked as coming from the body, the `packingListId` and `name` values are going to be semi-ignored. The client has to provide them or the routing will fail and they will get a 404. But the `Put` method will never actually see the values and instead has to read them from the request’s body, which the client had to also populate.
 
-For now we are only going to fix the Get method.
+For now, we are only going to fix the Get method.
 
 
 ## Round 1 - Fixing the Compiler Warnings
