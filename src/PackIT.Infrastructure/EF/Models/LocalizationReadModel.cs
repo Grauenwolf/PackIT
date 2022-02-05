@@ -1,8 +1,8 @@
-using System.Linq;
+﻿using System.Linq;
 
 namespace PackIT.Infrastructure.EF.Models
 {
-    internal class LocalizationReadModel
+    public class LocalizationReadModel
     {
         public string City { get; set; }
         public string Country { get; set; }
@@ -16,7 +16,7 @@ namespace PackIT.Infrastructure.EF.Models
                 Country = splitLocalization.Last()
             };
         }
-        
+
         public override string ToString()
             => $"{City},{Country}";
     }

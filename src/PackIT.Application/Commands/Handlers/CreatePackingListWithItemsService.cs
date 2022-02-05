@@ -4,18 +4,17 @@ using PackIT.Application.Services;
 using PackIT.Domain.Factories;
 using PackIT.Domain.Repositories;
 using PackIT.Domain.ValueObjects;
-using PackIT.Shared.Commands;
 
 namespace PackIT.Application.Commands.Handlers
 {
-    public class CreatePackingListWithItemsHandler : ICommandHandler<CreatePackingListWithItems>
+    public class CreatePackingListWithItemsService
     {
         private readonly IPackingListRepository _repository;
         private readonly IPackingListFactory _factory;
         private readonly IPackingListReadService _readService;
         private readonly IWeatherService _weatherService;
 
-        public CreatePackingListWithItemsHandler(IPackingListRepository repository, IPackingListFactory factory,
+        public CreatePackingListWithItemsService(IPackingListRepository repository, IPackingListFactory factory,
             IPackingListReadService readService, IWeatherService weatherService)
         {
             _repository = repository;

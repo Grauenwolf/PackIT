@@ -1,10 +1,10 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using PackIT.Infrastructure.EF.Config;
 using PackIT.Infrastructure.EF.Models;
 
 namespace PackIT.Infrastructure.EF.Contexts
 {
-    internal sealed class ReadDbContext : DbContext
+    public sealed class ReadDbContext : DbContext
     {
         public DbSet<PackingListReadModel> PackingLists { get; set; }
 

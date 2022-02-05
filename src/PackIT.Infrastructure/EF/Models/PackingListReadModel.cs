@@ -1,9 +1,9 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace PackIT.Infrastructure.EF.Models
 {
-    internal class PackingListReadModel
+    public class PackingListReadModel
     {
         public Guid Id { get; set; }
         public int Version { get; set; }

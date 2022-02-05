@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -6,17 +6,26 @@ using PackIT.Application.DTO;
 using PackIT.Application.Queries;
 using PackIT.Infrastructure.EF.Contexts;
 using PackIT.Infrastructure.EF.Models;
-using PackIT.Shared.Queries;
 
 namespace PackIT.Infrastructure.EF.Queries.Handlers
 {
-    internal sealed class SearchPackingListsHandler : IQueryHandler<SearchPackingLists, IEnumerable<PackingListDto>>
+    public sealed class PackingListQueryService
     {
         private readonly DbSet<PackingListReadModel> _packingLists;
 
-        public SearchPackingListsHandler(ReadDbContext context)
+        public PackingListQueryService(ReadDbContext context)
             => _packingLists = context.PackingLists;
-        
+
+        public Task<PackingListDto> HandleAsync(GetPackingList query)
+        {
+            return _packingLists
+                .Include(pl => pl.Items)
+                .Where(pl => pl.Id == query.Id)
+                .Select(pl => pl.AsDto())
+                .AsNoTracking()
+                .SingleOrDefaultAsync();
+        }
+
         public async Task<IEnumerable<PackingListDto>> HandleAsync(SearchPackingLists query)
         {
             var dbQuery = _packingLists

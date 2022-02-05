@@ -9,7 +9,6 @@ using PackIT.Domain.Entities;
 using PackIT.Domain.Factories;
 using PackIT.Domain.Repositories;
 using PackIT.Domain.ValueObjects;
-using PackIT.Shared.Commands;
 using Shouldly;
 using System;
 using System.Threading.Tasks;
@@ -68,7 +67,7 @@ namespace PackIT.UnitTests.Application
 
 		#region ARRANGE
 
-		private readonly ICommandHandler<CreatePackingListWithItems> _commandHandler;
+		private readonly CreatePackingListWithItemsService _commandHandler;
 		private readonly IPackingListRepository _repository;
 		private readonly IWeatherService _weatherService;
 		private readonly IPackingListReadService _readService;
@@ -81,7 +80,7 @@ namespace PackIT.UnitTests.Application
 			_readService = Substitute.For<IPackingListReadService>();
 			_factory = Substitute.For<IPackingListFactory>();
 
-			_commandHandler = new CreatePackingListWithItemsHandler(_repository, _factory, _readService, _weatherService);
+			_commandHandler = new CreatePackingListWithItemsService(_repository, _factory, _readService, _weatherService);
 		}
 
 		#endregion

@@ -185,8 +185,42 @@ var result = await _queryDispatcher.QueryAsync<GetPackingList, PackingListDto>(q
 
 A tiny amount of boilerplate added for potentially a lot of performance gain. (Though it should be noted that this would only matter if the web servers are under a heavy CPU load.)
 
+## Round 8 - Removing the Dispatchers
+
+Let's look at that code again. What exactly are the dispatchers doing?
+
+* They use the DI framework to locate a service.
+* They allow the developer to invoke the service.
+
+And what does the ASP.NET Core pipeline do?
+
+* They use the DI framework to locate a service.
+* They allow the developer to invoke the service.
+
+So why do we need the dispatcher? What does it give us what we didn't already have?
+
+1. You don't have to instantiate services you don't need.
+
+Ok, we can do that.
+
+### Fix
 
 
+Step 1 is to separate the controllers based on dependencies. We'll need three:
+
+* `PackingListsCommandController`
+* `PackingListsCreatePackingListWithItemsController`
+* `PackingListsQueryController`
+
+Note that the routes do not need to be changed. From the client's persepective, everything is still accessed via `/api/PackingLists/...`.
+
+Step 2 is to create the 3 matching service classes.
+
+* `PackingListCommandService` 
+* `CreatePackingListWithItemsService` (Formally `CreatePackingListWithItemsHandler`)
+* `PackingListQueryService` 
+
+These three service classes replace the multitude of single-method handler classes. The `CreatePackingListWithItemsService` class is kept separate from the others because it has additional dependencies. 
 
 # PackIT
 PackIT is simple "packing list app" built on top of clean architecture and CQRS.
