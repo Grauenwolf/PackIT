@@ -216,7 +216,7 @@ So why do we need the dispatcher? What does it give us what we didn't already ha
 
 1. You don't have to instantiate services you don't need.
 
-Ok, we can do that.
+That's all? Ok, we can do that.
 
 ### Fix
 
@@ -227,7 +227,7 @@ Step 1 is to separate the controllers based on dependencies. We'll need three:
 * `PackingListsCreatePackingListWithItemsController`
 * `PackingListsQueryController`
 
-Note that the routes do not need to be changed. From the client's persepective, everything is still accessed via `/api/PackingLists/...`.
+Note that the routes do not need to be changed. From the client's perspective, everything is still accessed via `/api/PackingLists/...`.
 
 Step 2 is to create the 3 matching service classes.
 
@@ -235,8 +235,9 @@ Step 2 is to create the 3 matching service classes.
 * `CreatePackingListWithItemsService` (Formally `CreatePackingListWithItemsHandler`)
 * `PackingListQueryService` 
 
-These three service classes replace the multitude of single-method handler classes. The `CreatePackingListWithItemsService` class is kept separate from the others because it has additional dependencies. 
+These three service classes replace the multitude of single-method handler classes. The `CreatePackingListWithItemsService` class is kept separate from the others because it has additional dependencies.
 
+If you were really into extreme segregation, you could even create one controller per endpoint. Or even get rid of controllers entirely and use ASP.NET Core 6's minimal APIs. But we don’t need to go that far to achieve our goal.
 
 
 # PackIT
