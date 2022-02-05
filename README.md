@@ -78,11 +78,13 @@ Long term, it may make sense to create subdivisions based on role such as `PackI
 
 ## Round 4 - Remove the Dispatcher Interfaces
 
-The `InMemoryCommandDispatcher` class has a `ICommandDispatcher` interface. Likewise, the `InMemoryQueryDispatcher` class has a `IQueryDispatcher`. But why? They have no external dependnecies that would need to be mocked. Nor is there an alternative implementation that could be used in their place. 
+The `InMemoryCommandDispatcher` class has a `ICommandDispatcher` interface. Likewise, the `InMemoryQueryDispatcher` class has a `IQueryDispatcher`. But why? They have no external dependencies that would need to be mocked. Nor is there an alternative implementation that could be used in their place. 
 
 So those interfaces need to go away. Things that don't benefit the code, that have no real purpose, should be removed.
 
 And while we're at it, the classes will be renamed `CommandDispatcher` and `QueryDispatcher`. The prefix is not necessary as obviously they are "in-memory".
+
+
 
 
 
