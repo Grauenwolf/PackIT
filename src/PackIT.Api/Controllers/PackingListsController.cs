@@ -11,10 +11,10 @@ namespace PackIT.Api.Controllers
 {
     public class PackingListsController : BaseController
     {
-        private readonly ICommandDispatcher _commandDispatcher;
-        private readonly IQueryDispatcher _queryDispatcher;
+        private readonly CommandDispatcher _commandDispatcher;
+        private readonly QueryDispatcher _queryDispatcher;
 
-        public PackingListsController(ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher)
+        public PackingListsController(CommandDispatcher commandDispatcher, QueryDispatcher queryDispatcher)
         {
             _commandDispatcher = commandDispatcher;
             _queryDispatcher = queryDispatcher;

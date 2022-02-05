@@ -1,15 +1,15 @@
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using PackIT.Shared.Queries;
 
 namespace PackIT.Shared.Queries
 {
-    internal sealed class InMemoryQueryDispatcher : IQueryDispatcher
+    public sealed class QueryDispatcher 
     {
         private readonly IServiceProvider _serviceProvider;
 
-        public InMemoryQueryDispatcher(IServiceProvider serviceProvider)
+        public QueryDispatcher(IServiceProvider serviceProvider)
             => _serviceProvider = serviceProvider;
 
         public async Task<TResult> QueryAsync<TResult>(IQuery<TResult> query)

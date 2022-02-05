@@ -1,14 +1,14 @@
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace PackIT.Shared.Commands
 {
-    internal sealed class InMemoryCommandDispatcher : ICommandDispatcher
+    public sealed class CommandDispatcher
     {
         private readonly IServiceProvider _serviceProvider;
 
-        public InMemoryCommandDispatcher(IServiceProvider serviceProvider)
+        public CommandDispatcher(IServiceProvider serviceProvider)
             => _serviceProvider = serviceProvider;
 
         public async Task DispatchAsync<TCommand>(TCommand command) where TCommand : class, ICommand
