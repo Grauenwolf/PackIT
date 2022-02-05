@@ -143,6 +143,49 @@ builder
 ```
 
 
+## Round 7 - Removing the Reflection from the Query Dispatcher
+
+The query dispatcher has an... interesting design.
+
+```
+public async Task<TResult> QueryAsync<TResult>(IQuery<TResult> query)
+{
+    using var scope = _serviceProvider.CreateScope();
+    var handlerType = typeof(IQueryHandler<,>).MakeGenericType(query.GetType(), typeof(TResult));
+    var handler = scope.ServiceProvider.GetRequiredService(handlerType);
+
+    return await (Task<TResult>)handlerType.GetMethod(nameof(IQueryHandler<IQuery<TResult>, TResult>.HandleAsync))?
+        .Invoke(handler, new[] { query });
+}
+```
+
+Reflection is quite expensive in .NET. You really shouldn't be using it unless you absolutely need it. And even then, only if you can cache the reflection calls so you don't need to make them multiple times.
+
+
+We can remove the refleciton by adding a type parameter.
+
+```
+public async Task<TResult> QueryAsync<TQuery, TResult>(TQuery query)
+    where TQuery : class, IQuery<TResult>
+{
+    using var scope = _serviceProvider.CreateScope();
+    var handler = scope.ServiceProvider.GetRequiredService<IQueryHandler<TQuery, TResult>>();
+
+
+    var result = await handler.HandleAsync((TQuery)query);
+    return (TResult)result;
+}
+```
+
+Unfortunately, this means we have to likewise add that type parameter in the caller. 
+
+```
+var result = await _queryDispatcher.QueryAsync<GetPackingList, PackingListDto>(query);
+```
+
+A tiny amount of boilerplate added for potentially a lot of performance gain. (Though it should be noted that this would only matter if the web servers are under a heavy CPU load.)
+
+
 
 
 # PackIT
