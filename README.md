@@ -93,6 +93,57 @@ An example of a hidden dependency is the `LoggingCommandHandlerDecorator`. There
 
 Fortunately it is a trivial operation to move the logging directly into the `CommandDispatcher` class.
 
+## Round 6 - Programming to the Interface, not the Implementation
+
+Back in round 2, we removed the unused `_localization` field from `PackingList`. That was not without risk. This project doesn't have any tests to verify that data is actually being written to the database, all integration tests have to be performed by hand.
+
+While the program appeared the be working correctly, it was silently losing data. Localization data was coming in from the UI and being lost along the way.
+
+When you look at the code, you have to ask, "Why is a private field that the application itself can't see being stored in the database?". 
+
+Turns out the magic is happening inside the `WriteConfiguration.Configure` class
+
+```
+            builder
+                .Property(typeof(Localization), "_localization")
+                .HasConversion(localizationConverter)
+                .HasColumnName("Localization");
+```
+
+Rather than reading a property normally, some reflection magic is being used to look at the internals of the class.
+
+You may have heard of the expression, "Program to the interface, not the implementation". A common misunderstanding of that term is that you should wrap everything in a shadow interface, for example all calls to a `Widget` object should be via a `IWidget` interface with exactly the same list of methods.
+
+In actuality, what that expression means is that you should only access an object through its API. That would include our `IWidget` interface, but also any public method or property on `Widget` itself. 
+
+What it doesn't include is reaching inside the object to examine its private fields. Those are private for a reason. They can change at any time and those changes should have zero impact on code outside of the class. 
+
+### Fix
+
+Step 1, restore the code that was deleted back in round 2.
+Step 2, change the fields to be properties.
+
+```
+public PackingListName Name { get; init; }
+public Localization Localization { get; init; }
+```
+
+Step 3, change the mapping to use said properties.
+
+```
+builder
+    .Property(pl => pl.Localization)
+    .HasConversion(localizationConverter)
+    .HasColumnName("Localization");
+
+builder
+    .Property(pl => pl.Name)
+    .HasConversion(packingListNameConverter)
+    .HasColumnName("Name");
+```
+
+
+
 
 # PackIT
 PackIT is simple "packing list app" built on top of clean architecture and CQRS.

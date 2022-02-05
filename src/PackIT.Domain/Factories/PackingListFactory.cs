@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using PackIT.Domain.Consts;
 using PackIT.Domain.Entities;
@@ -14,8 +14,8 @@ namespace PackIT.Domain.Factories
         public PackingListFactory(IEnumerable<IPackingItemsPolicy> policies)
             => _policies = policies;
 
-        public PackingList Create(PackingListId id, PackingListName name)
-            => new(id, name);
+        public PackingList Create(PackingListId id, PackingListName name, Localization localization)
+            => new(id, name, localization);
 
         public PackingList CreateWithDefaultItems(PackingListId id, PackingListName name, TravelDays days, Gender gender,
             Temperature temperature, Localization localization)
@@ -24,7 +24,7 @@ namespace PackIT.Domain.Factories
             var applicablePolicies = _policies.Where(p => p.IsApplicable(data));
 
             var items = applicablePolicies.SelectMany(p => p.GenerateItems(data));
-            var packingList = Create(id, name);
+            var packingList = Create(id, name, localization);
 
             packingList.AddItems(items);
 

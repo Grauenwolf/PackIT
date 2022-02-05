@@ -9,12 +9,13 @@ namespace PackIT.Domain.Entities
 {
     public class PackingList : AggregateRoot<PackingListId>
     {
-        private PackingListName _name;
+        public PackingListName Name { get; init; }
+        public Localization Localization { get; init; }
 
         private readonly LinkedList<PackingItem> _items = new();
 
-        private PackingList(PackingListId id, PackingListName name, LinkedList<PackingItem> items)
-            : this(id, name)
+        private PackingList(PackingListId id, PackingListName name, Localization localization, LinkedList<PackingItem> items)
+            : this(id, name, localization)
         {
             _items = items;
         }
@@ -23,10 +24,11 @@ namespace PackIT.Domain.Entities
         {
         }
 
-        internal PackingList(PackingListId id, PackingListName name)
+        internal PackingList(PackingListId id, PackingListName name, Localization localization)
         {
             Id = id;
-            _name = name;
+            Name = name;
+            Localization = localization;
         }
 
         public void AddItem(PackingItem item)
@@ -35,7 +37,7 @@ namespace PackIT.Domain.Entities
 
             if (alreadyExists)
             {
-                throw new PackingItemAlreadyExistsException(_name, item.Name);
+                throw new PackingItemAlreadyExistsException(Name, item.Name);
             }
 
             _items.AddLast(item);

@@ -49,7 +49,7 @@ namespace PackIT.UnitTests.Domain
 
 		private PackingList GetPackingList()
 		{
-			var packingList = _factory.Create(Guid.NewGuid(), "MyList");
+			var packingList = _factory.Create(Guid.NewGuid(), "MyList", Localization.Create("Warsaw, Poland"));
 			packingList.ClearEvents();
 			return packingList;
 		}

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
@@ -24,12 +24,12 @@ namespace PackIT.Infrastructure.EF.Config
                 .HasConversion(id => id.Value, id => new PackingListId(id));
 
             builder
-                .Property(typeof(Localization), "_localization")
+                .Property(pl => pl.Localization)
                 .HasConversion(localizationConverter)
                 .HasColumnName("Localization");
 
             builder
-                .Property(typeof(PackingListName), "_name")
+                .Property(pl => pl.Name)
                 .HasConversion(packingListNameConverter)
                 .HasColumnName("Name");
 
