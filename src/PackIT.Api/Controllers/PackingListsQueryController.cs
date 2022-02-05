@@ -17,7 +17,7 @@ namespace PackIT.Api.Controllers
             _handler = handler;
         }
 
-        [HttpGet("{id:guid}")]
+        [HttpGet("{Id}")]
         public async Task<ActionResult<PackingListDto>> Get([FromRoute] GetPackingList query)
         {
             var result = await _handler.HandleAsync(query);
