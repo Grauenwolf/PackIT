@@ -1,6 +1,6 @@
 using System;
 using PackIT.Domain.Consts;
-using PackIT.Shared.Abstractions.Commands;
+using PackIT.Shared.Commands;
 
 namespace PackIT.Application.Commands
 {

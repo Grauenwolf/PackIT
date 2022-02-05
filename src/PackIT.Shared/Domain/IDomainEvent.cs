@@ -1,4 +1,4 @@
-namespace PackIT.Shared.Abstractions.Domain
+namespace PackIT.Shared.Domain
 {
     public interface IDomainEvent
     {

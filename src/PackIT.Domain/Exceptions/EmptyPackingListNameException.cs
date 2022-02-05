@@ -1,4 +1,4 @@
-using PackIT.Shared.Abstractions.Exceptions;
+﻿using PackIT.Shared.Exceptions;
 
 namespace PackIT.Domain.Exceptions
 {

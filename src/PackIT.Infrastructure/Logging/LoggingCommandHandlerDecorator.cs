@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using PackIT.Shared.Abstractions.Commands;
+using PackIT.Shared.Commands;
 
 namespace PackIT.Infrastructure.Logging
 {

@@ -1,10 +1,10 @@
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using PackIT.Application.Exceptions;
 using PackIT.Application.Services;
 using PackIT.Domain.Factories;
 using PackIT.Domain.Repositories;
 using PackIT.Domain.ValueObjects;
-using PackIT.Shared.Abstractions.Commands;
+using PackIT.Shared.Commands;
 
 namespace PackIT.Application.Commands.Handlers
 {
@@ -15,7 +15,7 @@ namespace PackIT.Application.Commands.Handlers
         private readonly IPackingListReadService _readService;
         private readonly IWeatherService _weatherService;
 
-        public CreatePackingListWithItemsHandler(IPackingListRepository repository, IPackingListFactory factory, 
+        public CreatePackingListWithItemsHandler(IPackingListRepository repository, IPackingListFactory factory,
             IPackingListReadService readService, IWeatherService weatherService)
         {
             _repository = repository;
@@ -27,7 +27,7 @@ namespace PackIT.Application.Commands.Handlers
         public async Task HandleAsync(CreatePackingListWithItems command)
         {
             var (id, name, days, gender, localizationWriteModel) = command;
-            
+
             if (await _readService.ExistsByNameAsync(name))
             {
                 throw new PackingListAlreadyExistsException(name);
@@ -39,9 +39,9 @@ namespace PackIT.Application.Commands.Handlers
             if (weather is null)
             {
                 throw new MissingLocalizationWeatherException(localization);
-            } 
+            }
 
-            var packingList = _factory.CreateWithDefaultItems(id, name, days, gender, weather.Temperature, 
+            var packingList = _factory.CreateWithDefaultItems(id, name, days, gender, weather.Temperature,
                 localization);
 
             await _repository.AddAsync(packingList);

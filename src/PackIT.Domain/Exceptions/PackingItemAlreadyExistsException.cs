@@ -1,4 +1,4 @@
-using PackIT.Shared.Abstractions.Exceptions;
+﻿using PackIT.Shared.Exceptions;
 
 namespace PackIT.Domain.Exceptions
 {
@@ -7,7 +7,7 @@ namespace PackIT.Domain.Exceptions
         public string ListName { get; }
         public string ItemName { get; }
 
-        public PackingItemAlreadyExistsException(string listName, string itemName) 
+        public PackingItemAlreadyExistsException(string listName, string itemName)
             : base($"Packing list: '{listName}' already defined item '{itemName}'")
         {
             ListName = listName;

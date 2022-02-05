@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace PackIT.Shared.Abstractions.Commands
+namespace PackIT.Shared.Commands
 {
     public interface ICommandDispatcher
     {

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PackIT.Shared.Abstractions.Domain
+namespace PackIT.Shared.Domain
 {
     public abstract class AggregateRoot<T>
     {

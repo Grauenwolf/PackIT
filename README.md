@@ -67,5 +67,24 @@ In production grade code, there are two ways to handle static analysis.
 1. Turn on the minimal rules at first. Then slowly add additional rules over time as problems are seen.
 2. Turn on all the rules at first. Then remove the rules that are unreliable or not applicable.
 
+## Round 3 - Merge the Shared Projects
+
+A 'shared' project that could later be turned into a library that is reused across multiple applications is valuable. But arbitrarily dividing it into two projects just makes it hard to figure out where a given class is.
+
+Furthermore, there is never a situation where an application would use one of the libraries without the other. So For now we'll merge `PackIT.Shared` and `PackIT.Shared.Abstractions`.
+
+Long term, it may make sense to create subdivisions based on role such as `PackIT.Shared.Configuration` or `PackIT.Shared.Data`. But that is only necessary if some applications will only need a subset of the roles.
+
+
+
+
+
+
+
+
+
 # PackIT
 PackIT is simple "packing list app" built on top of clean architecture and CQRS.
+
+
+

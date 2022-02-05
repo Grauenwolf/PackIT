@@ -1,6 +1,6 @@
 using System;
 
-namespace PackIT.Shared.Abstractions.Exceptions
+namespace PackIT.Shared.Exceptions
 {
     public abstract class PackItException : Exception
     {

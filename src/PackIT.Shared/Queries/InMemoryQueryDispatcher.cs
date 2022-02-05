@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
-using PackIT.Shared.Abstractions.Queries;
+using PackIT.Shared.Queries;
 
 namespace PackIT.Shared.Queries
 {

@@ -1,6 +1,6 @@
-using PackIT.Domain.Entities;
+﻿using PackIT.Domain.Entities;
 using PackIT.Domain.ValueObjects;
-using PackIT.Shared.Abstractions.Domain;
+using PackIT.Shared.Domain;
 
 namespace PackIT.Domain.Events
 {

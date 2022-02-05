@@ -1,5 +1,5 @@
-﻿using System;
-using PackIT.Shared.Abstractions.Commands;
+﻿using PackIT.Shared.Commands;
+using System;
 
 namespace PackIT.Application.Commands
 {

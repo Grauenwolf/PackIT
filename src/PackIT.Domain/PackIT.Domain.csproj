@@ -6,7 +6,7 @@
 	</PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\PackIT.Shared.Abstractions\PackIT.Shared.Abstractions.csproj" />
+      <ProjectReference Include="..\PackIT.Shared\PackIT.Shared.csproj" />
     </ItemGroup>
 
 </Project>

@@ -1,6 +1,6 @@
-using System;
+﻿using System;
 using PackIT.Application.DTO;
-using PackIT.Shared.Abstractions.Queries;
+using PackIT.Shared.Queries;
 
 namespace PackIT.Application.Queries
 {

@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
+using PackIT.Shared.Queries;
 
-namespace PackIT.Shared.Abstractions.Queries
+namespace PackIT.Shared.Queries
 {
     public interface IQueryDispatcher
     {

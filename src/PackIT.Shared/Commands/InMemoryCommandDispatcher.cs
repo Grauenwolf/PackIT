@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
-using PackIT.Shared.Abstractions.Commands;
 
 namespace PackIT.Shared.Commands
 {

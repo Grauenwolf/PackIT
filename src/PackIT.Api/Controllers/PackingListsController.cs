@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using PackIT.Application.Commands;
 using PackIT.Application.DTO;
 using PackIT.Application.Queries;
-using PackIT.Shared.Abstractions.Commands;
-using PackIT.Shared.Abstractions.Queries;
+using PackIT.Shared.Commands;
+using PackIT.Shared.Queries;
 
 namespace PackIT.Api.Controllers
 {

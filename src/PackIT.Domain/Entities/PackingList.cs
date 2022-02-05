@@ -1,9 +1,9 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using PackIT.Domain.Events;
 using PackIT.Domain.Exceptions;
 using PackIT.Domain.ValueObjects;
-using PackIT.Shared.Abstractions.Domain;
+using PackIT.Shared.Domain;
 
 namespace PackIT.Domain.Entities
 {
