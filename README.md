@@ -85,6 +85,13 @@ So those interfaces need to go away. Things that don't benefit the code, that ha
 And while we're at it, the classes will be renamed `CommandDispatcher` and `QueryDispatcher`. The prefix is not necessary as obviously they are "in-memory".
 
 
+## Round 5 - Remove the Hidden Dependency from the Command Dispatcher
+
+Hidden dependencies are a bad thing. They make it very difficult to understand the program's flow, which in turn means that it isn't easy to understand where future changes need to be made. 
+
+An example of a hidden dependency is the `LoggingCommandHandlerDecorator`. There is no mention of it in the handlers themselves. Nor is it mentioned in the `CommandDispatcher` code. By all appearances, the `CommandDispatcher` doesn't even look like it could support any sort of filter or pipelining capabilities.
+
+Fortunately it is a trivial operation to move the logging directly into the `CommandDispatcher` class.
 
 
 # PackIT
