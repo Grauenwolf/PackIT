@@ -1,8 +1,7 @@
+using PackIT.Infrastructure.DTO.External;
+using PackIT.Infrastructure.ValueObjects;
 using System;
 using System.Threading.Tasks;
-using PackIT.Application.DTO.External;
-using PackIT.Application.Services;
-using PackIT.Domain.ValueObjects;
 
 namespace PackIT.Infrastructure.Services
 {

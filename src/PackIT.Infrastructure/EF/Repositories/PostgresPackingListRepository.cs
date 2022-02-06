@@ -1,9 +1,9 @@
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using PackIT.Domain.Entities;
-using PackIT.Domain.Repositories;
-using PackIT.Domain.ValueObjects;
 using PackIT.Infrastructure.EF.Contexts;
+using PackIT.Infrastructure.Entities;
+using PackIT.Infrastructure.Repositories;
+using PackIT.Infrastructure.ValueObjects;
 
 namespace PackIT.Infrastructure.EF.Repositories
 {

@@ -1,7 +1,7 @@
-﻿using System;
+﻿using PackIT.Infrastructure.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using PackIT.Application.DTO;
 
 namespace PackIT.Infrastructure.EF.Models
 {

@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using PackIT.Domain.Entities;
-using PackIT.Domain.ValueObjects;
 using PackIT.Infrastructure.EF.Config;
+using PackIT.Infrastructure.Entities;
+using PackIT.Infrastructure.ValueObjects;
 
 namespace PackIT.Infrastructure.EF.Contexts
 {

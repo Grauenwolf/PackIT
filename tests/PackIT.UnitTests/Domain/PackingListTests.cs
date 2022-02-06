@@ -1,9 +1,9 @@
-using PackIT.Domain.Entities;
-using PackIT.Domain.Events;
-using PackIT.Domain.Exceptions;
-using PackIT.Domain.Factories;
-using PackIT.Domain.Policies;
-using PackIT.Domain.ValueObjects;
+using PackIT.Infrastructure.Entities;
+using PackIT.Infrastructure.Events;
+using PackIT.Infrastructure.Exceptions;
+using PackIT.Infrastructure.Factories;
+using PackIT.Infrastructure.Policies;
+using PackIT.Infrastructure.ValueObjects;
 using Shouldly;
 using System;
 using System.Linq;

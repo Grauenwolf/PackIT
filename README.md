@@ -330,6 +330,30 @@ Probably not, because those lines are nearly identical to the ones before and af
 
 Continuing the work we started in round 8, we'll remove the `ICommand...` and `IQuery...` interfaces. They were only needed for the dispatcher, which again just duplicates what ASP.NET Core is already doing. 
 
+## Round 11 - Merging the Projects
+
+Further cleaning of this application will require getting a better understanding of exactly what is in the inventory of classes and interfaces. And that's difficult because they are so widely scattered, almost as if ny random.
+
+For example, the entities are scattered across three folders, with their DbContext in a fourth and their database mappings in a fifth. Some of these folders aren't even in the same project.
+
+A good way to detect inappriproate project separation is the repetition of generic folder names. When you see the same folder in two or three of the projects, you should ask "Why aren't these together?". 
+
+There is an exception to this rule, bounded contexts. For example, lets say you ahve one namespace (or project) that dealt with things related to customers and orders. And another with things related to inventory and manufactoring. Below those domain specific namespaces it would make sense to have a mirrored folder structure. Each domain would need its models, business rules, data access layer, etc. 
+
+But again, that's not what we see here. As there are only two closely related tables, there is no need to for dividing into bounded contexts.
+
+Another indicator of poor project structure is namespaces with a single class. Namespaces are meant to group related concepts together. There is rarely a situation where a single class represents a complete concept onto itself. And when that does happen, the class is probably too large and needs to be broken up.
+
+A related problem is type-specific namespaces. For example, constants and enums used by a model should be placed with that model. Likewise, the constants and enums used by a business rule should be with the business rule. There shouldn't be a generic namespace that just holds all of the constants and enums. Likewise there shouldn't be a generic namespace for all of the intefaces or all of the exceptions.
+
+You can and often should have namespaces that relate to layers. For example, your data access layer, your business logic layer (i.e. services in ASP.NET Core applications), your presentation layer (i.e. controllers).
+
+
+## Fix
+
+There's a lot to do here, so we'll take it in multiple rounds. First up is to bring the Application, Domain, and Infrastructure projects togther. 
+
+Since it's higher than the other two, we'll keep the Infrastructure project and roll the other two into it. Other than fixing up the namespaces, no other changes will be made at this point.
 
 
 # PackIT

@@ -22,7 +22,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\PackIT.Application\PackIT.Application.csproj" />
+      <ProjectReference Include="..\..\src\PackIT.Infrastructure\PackIT.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>
