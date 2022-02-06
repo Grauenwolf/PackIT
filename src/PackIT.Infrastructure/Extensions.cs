@@ -5,11 +5,9 @@ using PackIT.Data;
 using PackIT.Infrastructure.Commands.Handlers;
 using PackIT.Infrastructure.EF.Options;
 using PackIT.Infrastructure.EF.Queries.Handlers;
-using PackIT.Infrastructure.EF.Repositories;
 using PackIT.Infrastructure.EF.Services;
 using PackIT.Infrastructure.Factories;
 using PackIT.Infrastructure.Policies;
-using PackIT.Infrastructure.Repositories;
 using PackIT.Infrastructure.Services;
 
 namespace PackIT.Infrastructure
@@ -18,7 +16,6 @@ namespace PackIT.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddScoped<IPackingListRepository, PostgresPackingListRepository>();
             services.AddScoped<IPackingListReadService, PostgresPackingListReadService>();
 
             var options = configuration.GetSection("Postgres").Get<PostgresOptions>();

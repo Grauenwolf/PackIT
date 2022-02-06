@@ -18,7 +18,7 @@ namespace PackIT.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreatePackingListWithItems command)
         {
-            await _handler.HandleAsync(command);
+            await _handler.CreatePackingListWithItemsAsync(command);
             return CreatedAtAction(nameof(Post), new { id = command.Id }, null);
         }
 

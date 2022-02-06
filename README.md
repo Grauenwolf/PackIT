@@ -436,7 +436,54 @@ The code tries to address this by moving the `Add` item method from `PackingList
 
 Later we can go back and make `PackingList` look like a more typical class.
 
+## Round 14 - Restructuring the Repository
 
+Repository classes can be incredibly helpful. Done correctly, they take complex storage logic and hide it behind a simple-looking abstraction.
+
+Done incorrectly, you end up with a bunch of two-line methods and you wonder why the repository exists at all.
+
+What's often not understood is that the Service classes often are the repository itself. This is especially true for simpler applications that don't have a lot of business logic. Or if that business logic can't be divorced from the database.
+
+To test this theory, let's look at the methods in `PackingListCommandService`.
+
+Well actually, every method is named `Handle`. So let’s fix that first, then enumerate the methods.
+
+* `AddPackingItemAsync`
+* `PackItemAsync`
+* `RemovePackingItemAsync`
+* `RemovePackingListAsync`
+
+This is what you want from a good repository, explicit actions that affect the database without revealing the details of the database.
+
+What you usually don't want is generic actions such as `Create`, `Update`, or `Delete` unless your higher-level code is likewise generic.
+
+For contrast, let's look at `CreatePackingListWithItemsService`.
+
+The `CreatePackingListWithItemsAsync` has a lot more going on than simple storage logic. There's some rather complex code to generate those items. So this is a higher level than a repository.
+
+What does this mean for this application?
+
+1. `PackingListCommandService` will become the de facto repository.
+2. `PostgresPackingListRepository` will be rolled into `PackingListCommandService`. It has nothing but two-line methods anyways.
+3. `CreatePackingListWithItemsService` will wrap `PackingListCommandService`.
+4. Create a shadow interface for `PackingListCommandService` so it can be mock-tested.
+
+### Testing Sidebar
+
+Very little testing exists in this project. And the tests that do exist are low-quality 'mock' tests.
+
+For example, the test named `HandleAsync_Calls_Repository_On_Success`, which validates `CreatePackingListWithItems`, only has two assertions.
+
+```
+exception.ShouldBeNull();
+await _repository.Received(1).AddPackingListAsync(Arg.Any<PackingList>());
+```
+
+This doesn't test whether the operation was completed successfully, only whether it happened to call a particular method on one of its dependencies. If the object under test is later revised to call a different method, the test will break.
+
+Even worse, nothing in the test verifies the data was actually saved to the database. It just assumes the EF Core mappings are correct. Back in round 6 we saw the results of such sloppy testing; namely silent data loss.
+
+For now we'll leave the `IPackingListCommandService` interface in place. But the long-term plan should be to throw it away and build some proper integration tests. 
 
 
 

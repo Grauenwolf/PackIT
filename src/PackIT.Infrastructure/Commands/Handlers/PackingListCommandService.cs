@@ -1,23 +1,39 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using PackIT.Data;
 using PackIT.Data.Entities;
 using PackIT.Infrastructure.Exceptions;
-using PackIT.Infrastructure.Repositories;
 
 namespace PackIT.Infrastructure.Commands.Handlers
 {
-    public sealed class PackingListCommandService
+    public sealed class PackingListCommandService : IPackingListCommandService
     {
 
-        private readonly IPackingListRepository _repository;
+        private readonly WriteDbContext _writeDbContext;
 
-        public PackingListCommandService(IPackingListRepository repository)
+        public PackingListCommandService(WriteDbContext writeDbContext)
         {
-            _repository = repository;
+            _writeDbContext = writeDbContext;
         }
 
-        public async Task HandleAsync(AddPackingItem command)
+        Task<PackingList> GetAsync(PackingListId id)
         {
-            var packingList = await _repository.GetAsync(command.PackingListId);
+            return _writeDbContext.PackingLists
+                .Include("_items")
+                .SingleOrDefaultAsync(pl => pl.Id == id);
+        }
+
+        async Task UpdateAsync(PackingList packingList)
+        {
+            packingList.Version += 1;
+            _writeDbContext.PackingLists.Update(packingList);
+            await _writeDbContext.SaveChangesAsync();
+        }
+
+
+        public async Task AddPackingItemAsync(AddPackingItem command)
+        {
+            var packingList = await GetAsync(command.PackingListId);
 
             if (packingList is null)
             {
@@ -26,14 +42,13 @@ namespace PackIT.Infrastructure.Commands.Handlers
 
             var packingItem = new PackingItem(command.Name, command.Quantity);
             packingList.AddItem(packingItem);
-            packingList.Version += 1;
 
-            await _repository.UpdateAsync(packingList);
+            await UpdateAsync(packingList);
         }
 
-        public async Task HandleAsync(PackItem command)
+        public async Task PackItemAsync(PackItem command)
         {
-            var packingList = await _repository.GetAsync(command.PackingListId);
+            var packingList = await GetAsync(command.PackingListId);
 
             if (packingList is null)
             {
@@ -41,14 +56,13 @@ namespace PackIT.Infrastructure.Commands.Handlers
             }
 
             packingList.PackItem(command.Name);
-            packingList.Version += 1;
 
-            await _repository.UpdateAsync(packingList);
+            await UpdateAsync(packingList);
         }
 
-        public async Task HandleAsync(RemovePackingItem command)
+        public async Task RemovePackingItemAsync(RemovePackingItem command)
         {
-            var packingList = await _repository.GetAsync(command.PackingListId);
+            var packingList = await GetAsync(command.PackingListId);
 
             if (packingList is null)
             {
@@ -56,21 +70,29 @@ namespace PackIT.Infrastructure.Commands.Handlers
             }
 
             packingList.RemoveItem(command.Name);
-            packingList.Version += 1;
 
-            await _repository.UpdateAsync(packingList);
+            await UpdateAsync(packingList);
         }
 
-        public async Task HandleAsync(RemovePackingList command)
+        public async Task RemovePackingListAsync(RemovePackingList command)
         {
-            var packingList = await _repository.GetAsync(command.Id);
+            var packingList = await GetAsync(command.Id);
 
             if (packingList is null)
             {
                 throw new PackingListNotFoundException(command.Id);
             }
 
-            await _repository.DeleteAsync(packingList);
+            _writeDbContext.PackingLists.Remove(packingList);
+            await _writeDbContext.SaveChangesAsync();
+        }
+        public async Task AddPackingListAsync(PackingList packingList)
+        {
+            packingList.Version = 1;
+
+            await _writeDbContext.PackingLists.AddAsync(packingList);
+            await _writeDbContext.SaveChangesAsync();
+
         }
     }
 }

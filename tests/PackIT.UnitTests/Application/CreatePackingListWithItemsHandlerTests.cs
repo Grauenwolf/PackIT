@@ -6,7 +6,6 @@ using PackIT.Infrastructure.Consts;
 using PackIT.Infrastructure.DTO.External;
 using PackIT.Infrastructure.Exceptions;
 using PackIT.Infrastructure.Factories;
-using PackIT.Infrastructure.Repositories;
 using PackIT.Infrastructure.Services;
 using PackIT.Infrastructure.ValueObjects;
 using Shouldly;
@@ -19,7 +18,7 @@ namespace PackIT.UnitTests.Application
 	public class CreatePackingListWithItemsHandlerTests
 	{
 		Task Act(CreatePackingListWithItems command)
-			=> _commandHandler.HandleAsync(command);
+			=> _commandHandler.CreatePackingListWithItemsAsync(command);
 
 		[Fact]
 		public async Task HandleAsync_Throws_PackingListAlreadyExistsException_When_List_With_same_Name_Already_Exists()
@@ -62,20 +61,20 @@ namespace PackIT.UnitTests.Application
 			var exception = await Record.ExceptionAsync(() => Act(command));
 
 			exception.ShouldBeNull();
-			await _repository.Received(1).AddAsync(Arg.Any<PackingList>());
+			await _repository.Received(1).AddPackingListAsync(Arg.Any<PackingList>());
 		}
 
 		#region ARRANGE
 
 		private readonly CreatePackingListWithItemsService _commandHandler;
-		private readonly IPackingListRepository _repository;
+		private readonly IPackingListCommandService _repository;
 		private readonly IWeatherService _weatherService;
 		private readonly IPackingListReadService _readService;
 		private readonly IPackingListFactory _factory;
 
 		public CreatePackingListWithItemsHandlerTests()
 		{
-			_repository = Substitute.For<IPackingListRepository>();
+			_repository = Substitute.For<IPackingListCommandService>();
 			_weatherService = Substitute.For<IWeatherService>();
 			_readService = Substitute.For<IPackingListReadService>();
 			_factory = Substitute.For<IPackingListFactory>();

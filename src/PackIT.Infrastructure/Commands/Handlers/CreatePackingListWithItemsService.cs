@@ -2,19 +2,18 @@
 using PackIT.Data.Entities;
 using PackIT.Infrastructure.Exceptions;
 using PackIT.Infrastructure.Factories;
-using PackIT.Infrastructure.Repositories;
 using PackIT.Infrastructure.Services;
 
 namespace PackIT.Infrastructure.Commands.Handlers
 {
     public class CreatePackingListWithItemsService
     {
-        private readonly IPackingListRepository _repository;
+        private readonly IPackingListCommandService _repository;
         private readonly IPackingListFactory _factory;
         private readonly IPackingListReadService _readService;
         private readonly IWeatherService _weatherService;
 
-        public CreatePackingListWithItemsService(IPackingListRepository repository, IPackingListFactory factory,
+        public CreatePackingListWithItemsService(IPackingListCommandService repository, IPackingListFactory factory,
             IPackingListReadService readService, IWeatherService weatherService)
         {
             _repository = repository;
@@ -23,7 +22,7 @@ namespace PackIT.Infrastructure.Commands.Handlers
             _weatherService = weatherService;
         }
 
-        public async Task HandleAsync(CreatePackingListWithItems command)
+        public async Task CreatePackingListWithItemsAsync(CreatePackingListWithItems command)
         {
             var (id, name, days, gender, localizationWriteModel) = command;
 
@@ -43,9 +42,8 @@ namespace PackIT.Infrastructure.Commands.Handlers
             var packingList = _factory.CreateWithDefaultItems(id, name, days, gender, weather.Temperature,
                 localization);
 
-            packingList.Version = 1;
 
-            await _repository.AddAsync(packingList);
+            await _repository.AddPackingListAsync(packingList);
         }
     }
 }
