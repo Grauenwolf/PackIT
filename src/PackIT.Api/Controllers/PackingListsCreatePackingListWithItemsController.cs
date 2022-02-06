@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using PackIT.Infrastructure.Commands;
-using PackIT.Infrastructure.Commands.Handlers;
+using PackIT.Infrastructure.Commands.Models;
 
 namespace PackIT.Api.Controllers
 {

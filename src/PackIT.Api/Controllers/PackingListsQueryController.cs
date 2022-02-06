@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using PackIT.Infrastructure.DTO;
-using PackIT.Infrastructure.EF.Queries.Handlers;
 using PackIT.Infrastructure.Queries;
+using PackIT.Infrastructure.Queries.Models;
 
 namespace PackIT.Api.Controllers
 {

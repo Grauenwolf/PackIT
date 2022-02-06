@@ -1,6 +1,6 @@
 using PackIT.Data.Entities;
-using PackIT.Infrastructure.Factories;
-using PackIT.Infrastructure.Policies;
+using PackIT.Infrastructure.Commands.Factories;
+using PackIT.Infrastructure.Commands.Factories.Policies;
 using Shouldly;
 using System;
 using System.Linq;

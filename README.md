@@ -485,6 +485,28 @@ Even worse, nothing in the test verifies the data was actually saved to the data
 
 For now we'll leave the `IPackingListCommandService` interface in place. But the long-term plan should be to throw it away and build some proper integration tests. 
 
+## Round 15 - General Cleanup of PackIT.Infrastructure
+
+This round is dedicated to moving things around in the Infrastructure project. This includes eliminating namespaces that are too small, breaking up files that contain multiple classes, moving classes so that they are close to the classes that depend on them, etc.
+
+* Namespace `Commands.Handlers` is rolled up into `Commands`.
+* Namespace `Const` is merged into `Policies.Gender`, which is where its only class is used.
+* Namespace `DTO.External` is merged into `Services`, which is where its only class is used.
+* Namespace `DTO` is merged into `Queries`. The remaining DTOs are all concerned with the query service.
+* Namespace `EF.Queries.Handlers` is merged into `Queries`.
+* Namespace `EF.Options` is eliminated. Its only class is moved into the project root.
+* `IPackingListReadService` and `PostgresPackingListReadService` are moved into `Commands`. Despite the name, they are actually used for write operations.
+* Namespaces `Policies.Gender`, `Policies.Temperature`, and `Policies.Universal` are all rolled up into `Policies`.
+* Namespace `Policies` is moved to `Factories\Policies`.
+* Namespace `ValueObjects` is merged into `Factories\Policies`.
+* Namespace `Exceptions` is split between `Commands` and `Factories` as appropriate.
+* Namespace `Factories` is moved to `Commands\Factories` to put it closer to the service code that uses it.
+* The model/DTO classes in `Commands` are moved into new namespace `Commands\Models`.
+* The model/DTO classes in `Queries` are moved into new namespace `Queries\Models`.
+* Files with multiple classes are split up.
+* Files are renamed to match the class name.
+
+
 
 
 # PackIT

@@ -1,13 +1,10 @@
 using NSubstitute;
 using PackIT.Data.Entities;
 using PackIT.Infrastructure.Commands;
-using PackIT.Infrastructure.Commands.Handlers;
-using PackIT.Infrastructure.Consts;
-using PackIT.Infrastructure.DTO.External;
-using PackIT.Infrastructure.Exceptions;
-using PackIT.Infrastructure.Factories;
+using PackIT.Infrastructure.Commands.Factories;
+using PackIT.Infrastructure.Commands.Factories.Policies;
+using PackIT.Infrastructure.Commands.Models;
 using PackIT.Infrastructure.Services;
-using PackIT.Infrastructure.ValueObjects;
 using Shouldly;
 using System;
 using System.Threading.Tasks;
