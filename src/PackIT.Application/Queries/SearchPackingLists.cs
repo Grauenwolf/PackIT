@@ -1,10 +1,6 @@
-using System.Collections.Generic;
-using PackIT.Application.DTO;
-using PackIT.Shared.Queries;
-
-namespace PackIT.Application.Queries
+﻿namespace PackIT.Application.Queries
 {
-    public class SearchPackingLists : IQuery<IEnumerable<PackingListDto>>
+    public class SearchPackingLists
     {
         public string SearchPhrase { get; set; }
     }

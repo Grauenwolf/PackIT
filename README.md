@@ -326,6 +326,9 @@ If you hadn't seen which lines were pulled into a separate method, could you gue
 
 Probably not, because those lines are nearly identical to the ones before and after it. There's no complexity being hidden; it's just method calls for the sake of method calls.
 
+## Round 10 - Remove Unused Interfaces
+
+Continuing the work we started in round 8, we'll remove the `ICommand...` and `IQuery...` interfaces. They were only needed for the dispatcher, which again just duplicates what ASP.NET Core is already doing. 
 
 
 
