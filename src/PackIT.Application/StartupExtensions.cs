@@ -5,9 +5,9 @@ using PackIT.Domain.Policies;
 
 namespace PackIT.Application
 {
-    public static class Extensions
+    public static class StartupExtensions
     {
-        public static IServiceCollection AddApplication(this IServiceCollection services)
+        public static IServiceCollection AddPackITApplication(this IServiceCollection services)
         {
             services.AddSingleton<IPackingListFactory, PackingListFactory>();
             services.AddScoped<PackingListCommandService>();

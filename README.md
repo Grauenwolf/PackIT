@@ -239,6 +239,95 @@ These three service classes replace the multitude of single-method handler class
 
 If you were really into extreme segregation, you could even create one controller per endpoint. Or even get rid of controllers entirely and use ASP.NET Core 6's minimal APIs. But we don’t need to go that far to achieve our goal.
 
+## Round 9 - Taming the Extensions
+
+In round 8 we were able to delete two of the `Extensions` classes as part of removing the dispatchers. But there are still 6 more identically names classes. Like a class named `Utilities` or `Miscellaneous`, a class named `Extensions` implies it's just a dumping ground for random functions.
+
+
+### `PackIT.Shared.Options.Extensions`
+
+This has a single function with the signature `TOptions GetOptions<TOptions>(IConfiguration, string)`.
+
+The whole function can be replaced with `.GetSection(string).Get<T>` as shown below.
+
+```
+var options1 = configuration.GetOptions<PostgresOptions>("Postgres");
+var options2 = configuration.GetSection("Postgres").Get<PostgresOptions>();
+```
+
+### `PackIT.Shared.Extensions`
+
+This class contains `AddShared` and `UseShared`. It's functionality makes sense, as it registers all of the services from the shared library. But the generic name disguises its purpose. When used, you just see...
+
+```
+services.AddShared();
+services.AddApplication();
+services.AddInfrastructure(Configuration);
+```
+
+Shared what? There are no context clues from the name. And in theory all libraries could have an extension method named `AddShared`. So by convention, the library name or something equally specific is usually included in the method name.
+
+With that said, we are going to make the following changes:
+
+* `class StartupExtensions`
+* `IServiceCollection AddPackITShared(this IServiceCollection services)`
+* `IApplicationBuilder UsePackITShared(this IApplicationBuilder app)`
+
+Now when someone looks at the startup logic, they can see identify what's being loaded without having to view the source. 
+
+```
+services.AddPackITShared();
+services.AddApplication();
+services.AddInfrastructure(Configuration);
+```
+
+### `PackIT.Application.Extensions`
+
+Like `PackIT.Shared.Extensions`, we are going to rename the class to `StartupExtensions` and the methods to `AddPackITApplication`.
+
+The name `Application` is less onerous that `Shared` because other libraries shouldn't have an extension with the same name. But we changed it anyways for the sake of consistency. 
+
+
+### `PackIT.Infrastructure.EF.Queries.Extensions`
+
+This has a single function with the signature `PackingListDto AsDto(this PackingListReadModel readModel)`.
+
+There is zero reason for this to be an extension method as opposed to a regular method. Extension methods can be really useful when extending a class from another library or adding shared functionality to an interface. But if a normal method can be used, then it should be used.
+
+Therefore `AsDto` is going to be moved into the class `PackingListReadModel`.
+
+
+### `PackIT.Infrastructure.Extensions` and `PackIT.Infrastructure.EF.Extensions`
+
+Similar to what we've seen, `PackIT.Infrastructure.Extensions` holds the extension method(s) for registering services found in the Infrastructure project. 
+
+It does have an oddity though. Part of its `AddInfrastructure` method has been pulled into another `Extensions` class elsewhere in the project. So, you have to chase down the code to see what's really going on.
+
+Hitting the "Inline and Delete" command pulls in that code, and this is what you get.
+
+```
+public static IServiceCollection AddPackITInfrastructure(this IServiceCollection services, IConfiguration configuration)
+{
+    services.AddScoped<IPackingListRepository, PostgresPackingListRepository>();
+    services.AddScoped<IPackingListReadService, PostgresPackingListReadService>();
+
+    var options = configuration.GetSection("Postgres").Get<PostgresOptions>();
+    services.AddDbContext<ReadDbContext>(ctx => ctx.UseNpgsql(options.ConnectionString));
+    services.AddDbContext<WriteDbContext>(ctx => ctx.UseNpgsql(options.ConnectionString));
+
+    services.AddScoped<PackingListQueryService>();
+    services.AddSingleton<IWeatherService, DumbWeatherService>();
+
+    return services;
+}
+```
+
+If you hadn't seen which lines were pulled into a separate method, could you guess what they were?
+
+Probably not, because those lines are nearly identical to the ones before and after it. There's no complexity being hidden; it's just method calls for the sake of method calls.
+
+
+
 
 # PackIT
 PackIT is simple "packing list app" built on top of clean architecture and CQRS.

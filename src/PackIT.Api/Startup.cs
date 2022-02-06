@@ -1,15 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using PackIT.Application;
 using PackIT.Infrastructure;
@@ -28,14 +21,14 @@ namespace PackIT.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddShared();
-            services.AddApplication();
+            services.AddPackITShared();
+            services.AddPackITApplication();
             services.AddInfrastructure(Configuration);
             services.AddControllers();
-            
+
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo {Title = "PackIT.Api", Version = "v1"});
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "PackIT.Api", Version = "v1" });
             });
         }
 
@@ -49,7 +42,7 @@ namespace PackIT.Api
             }
 
             app.UseHttpsRedirection();
-            app.UseShared();
+            app.UsePackITShared();
 
             app.UseRouting();
 
