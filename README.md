@@ -402,7 +402,7 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
 }
 ```
 
-Back in round XXX, we moved `PackingListDto AsDto()` into the class as a normal method. At the time, that was sensible because the entity and its DTO were in the same project. 
+Back in round 9, we moved `PackingListDto AsDto()` into the class as a normal method. At the time, that was sensible because the entity and its DTO were in the same project. 
 
 Now that the application-level DTOs are in `Infrastructure` and the entities are in `Data`, that no longer works. So we have to convert it back into an extension method. However, this time we're going to call the extension class `Mapping`. 
 
