@@ -348,12 +348,12 @@ A related problem is type-specific namespaces. For example, constants and enums 
 
 You can and often should have namespaces that relate to layers. For example, your data access layer, your business logic layer (i.e. services in ASP.NET Core applications), your presentation layer (i.e. controllers).
 
+### Fix
 
-## Fix
-
-There's a lot to do here, so we'll take it in multiple rounds. First up is to bring the Application, Domain, and Infrastructure projects togther. 
+There's a lot to do here, so we'll take it in multiple rounds. First up is to bring the Application, Domain, and Infrastructure projects together. 
 
 Since it's higher than the other two, we'll keep the Infrastructure project and roll the other two into it. Other than fixing up the namespaces, no other changes will be made at this point.
+
 
 
 # PackIT
