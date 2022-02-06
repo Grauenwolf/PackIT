@@ -1,5 +1,4 @@
 using PackIT.Data.Entities;
-using PackIT.Data.Events;
 using PackIT.Infrastructure.Factories;
 using PackIT.Infrastructure.Policies;
 using Shouldly;
@@ -34,12 +33,7 @@ namespace PackIT.UnitTests.Domain
 			var exception = Record.Exception(() => packingList.AddItem(new PackingItem("Item 1", 1)));
 
 			exception.ShouldBeNull();
-			packingList.Events.Count().ShouldBe(1);
 
-			var @event = packingList.Events.FirstOrDefault() as PackingItemAdded;
-
-			@event.ShouldNotBeNull();
-			@event.PackingItem.Name.ShouldBe("Item 1");
 		}
 
 
@@ -48,7 +42,6 @@ namespace PackIT.UnitTests.Domain
 		private PackingList GetPackingList()
 		{
 			var packingList = _factory.Create(Guid.NewGuid(), "MyList", Localization.Create("Warsaw, Poland"));
-			packingList.ClearEvents();
 			return packingList;
 		}
 

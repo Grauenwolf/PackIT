@@ -3,13 +3,14 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using PackIT.Data.Events;
-using PackIT.Shared.Domain;
 
 namespace PackIT.Data.Entities
 {
-    public class PackingList : AggregateRoot<PackingListId>
+    public class PackingList : IHasVersion
     {
+        public PackingListId Id { get; protected set; }
+        public int Version { get; set; }
+
         public PackingListName Name { get; init; }
         public Localization Localization { get; init; }
 
@@ -42,7 +43,6 @@ namespace PackIT.Data.Entities
             }
 
             _items.AddLast(item);
-            AddEvent(new PackingItemAdded(this, item));
         }
 
         public void AddItems(IEnumerable<PackingItem> items)
@@ -59,14 +59,12 @@ namespace PackIT.Data.Entities
             var packedItem = item with { IsPacked = true };
 
             _items.Find(item).Value = packedItem;
-            AddEvent(new PackingItemPacked(this, item));
         }
 
         public void RemoveItem(string itemName)
         {
             var item = GetItem(itemName);
             _items.Remove(item);
-            AddEvent(new PackingItemRemoved(this, item));
         }
 
         private PackingItem GetItem(string itemName)

@@ -418,6 +418,26 @@ It is tempting to ditch the `AsDto` method entirely and just put a constructor o
 * DTO classes, as they belong to the service classes that expose them.
 
 
+## Round 13 - Removing Domain Events and Fixing Version
+
+The `Version` property in `AggregateRoot<T>` was constructed in an unusual fashion. Many things can increment it, but it can never be incremented more than once. Invoking `IncrementVersion()` a second time is a no-op.
+
+This is a database-backed field that could be used for auditing, so we can't simply delete it. But there is a better way to handle it. The ORM can automatically increment the version number when the record is saved. This would eliminate the complex logic currently being used.
+
+Another feature that can be removed are the "domain events". Aside from being mentioned in the unit tests, their only role was to act as an unreliable means of triggering a version number increase.
+
+This in turn means we can also remove any class that inherits from `IDomainEvent`.
+
+Now that `AggregateRoot<T>` has been stripped of all interesting functionality, it can be deleted. The `Id` and `Version` property have been pulled up into `PackingList`. Actually incrementing the version number is handled by the `DbContext` in the `SavingChanges` event as shown below.
+
+```
+private void WriteDbContext_SavingChanges(object sender, SavingChangesEventArgs e)
+{
+    foreach (var item in ChangeTracker.Entries().OfType<IHasVersion>())
+        item.Version += 1;
+}
+```
+
 
 
 # PackIT
