@@ -1,8 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PackIT.Infrastructure.EF.Config;
-using PackIT.Infrastructure.EF.Models;
+using PackIT.Data.Entities;
 
-namespace PackIT.Infrastructure.EF.Contexts
+namespace PackIT.Data
 {
     public sealed class ReadDbContext : DbContext
     {
@@ -16,9 +15,8 @@ namespace PackIT.Infrastructure.EF.Contexts
         {
             modelBuilder.HasDefaultSchema("packing");
 
-            var configuration = new ReadConfiguration();
-            modelBuilder.ApplyConfiguration<PackingListReadModel>(configuration);
-            modelBuilder.ApplyConfiguration<PackingItemReadModel>(configuration);
+            modelBuilder.ApplyConfiguration(new PackingListReadModel.Configuration());
+            modelBuilder.ApplyConfiguration(new PackingItemReadModel.Configuration());
         }
     }
 }

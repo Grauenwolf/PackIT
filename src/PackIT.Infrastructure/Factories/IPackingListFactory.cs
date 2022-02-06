@@ -1,5 +1,5 @@
-﻿using PackIT.Infrastructure.Consts;
-using PackIT.Infrastructure.Entities;
+﻿using PackIT.Data.Entities;
+using PackIT.Infrastructure.Consts;
 using PackIT.Infrastructure.ValueObjects;
 
 namespace PackIT.Infrastructure.Factories

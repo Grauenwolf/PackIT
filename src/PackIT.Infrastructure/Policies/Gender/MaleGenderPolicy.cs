@@ -1,4 +1,4 @@
-﻿using PackIT.Infrastructure.ValueObjects;
+﻿using PackIT.Data.Entities;
 using System;
 using System.Collections.Generic;
 

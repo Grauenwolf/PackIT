@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using PackIT.Infrastructure.Events;
-using PackIT.Infrastructure.Exceptions;
-using PackIT.Infrastructure.ValueObjects;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using PackIT.Data.Events;
 using PackIT.Shared.Domain;
 
-namespace PackIT.Infrastructure.Entities
+namespace PackIT.Data.Entities
 {
     public class PackingList : AggregateRoot<PackingListId>
     {
@@ -24,7 +25,7 @@ namespace PackIT.Infrastructure.Entities
         {
         }
 
-        internal PackingList(PackingListId id, PackingListName name, Localization localization)
+        public PackingList(PackingListId id, PackingListName name, Localization localization)
         {
             Id = id;
             Name = name;
@@ -78,6 +79,38 @@ namespace PackIT.Infrastructure.Entities
             }
 
             return item;
+        }
+
+        internal sealed class Configuration : IEntityTypeConfiguration<PackingList>
+        {
+            public void Configure(EntityTypeBuilder<PackingList> builder)
+            {
+                builder.HasKey(pl => pl.Id);
+
+                var localizationConverter = new ValueConverter<Localization, string>(l => l.ToString(),
+                    l => Localization.Create(l));
+
+                var packingListNameConverter = new ValueConverter<PackingListName, string>(pln => pln.Value,
+                    pln => new PackingListName(pln));
+
+                builder
+                    .Property(pl => pl.Id)
+                    .HasConversion(id => id.Value, id => new PackingListId(id));
+
+                builder
+                    .Property(pl => pl.Localization)
+                    .HasConversion(localizationConverter)
+                    .HasColumnName("Localization");
+
+                builder
+                    .Property(pl => pl.Name)
+                    .HasConversion(packingListNameConverter)
+                    .HasColumnName("Name");
+
+                builder.HasMany(typeof(PackingItem), "_items");
+
+                builder.ToTable("PackingLists");
+            }
         }
     }
 }

@@ -5,9 +5,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using PackIT.Infrastructure.EF.Contexts;
 
-namespace PackIT.Infrastructure.EF.Migrations
+namespace PackIT.Data.Migrations
 {
     [DbContext(typeof(ReadDbContext))]
     [Migration("20211107133838_Init_Read")]

@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using PackIT.Infrastructure.EF.Contexts;
-using PackIT.Infrastructure.EF.Models;
+using PackIT.Data;
+using PackIT.Data.Entities;
 using PackIT.Infrastructure.Services;
 
 namespace PackIT.Infrastructure.EF.Services

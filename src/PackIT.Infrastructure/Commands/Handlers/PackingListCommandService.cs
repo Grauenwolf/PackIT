@@ -1,6 +1,6 @@
-﻿using PackIT.Infrastructure.Exceptions;
+﻿using PackIT.Data.Entities;
+using PackIT.Infrastructure.Exceptions;
 using PackIT.Infrastructure.Repositories;
-using PackIT.Infrastructure.ValueObjects;
 using System.Threading.Tasks;
 
 namespace PackIT.Infrastructure.Commands.Handlers

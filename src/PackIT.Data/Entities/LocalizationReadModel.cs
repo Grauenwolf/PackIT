@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace PackIT.Infrastructure.EF.Models
+namespace PackIT.Data.Entities
 {
     public class LocalizationReadModel
     {

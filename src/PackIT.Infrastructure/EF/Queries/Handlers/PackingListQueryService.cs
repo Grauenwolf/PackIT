@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using PackIT.Data;
+using PackIT.Data.Entities;
 using PackIT.Infrastructure.DTO;
-using PackIT.Infrastructure.EF.Contexts;
-using PackIT.Infrastructure.EF.Models;
 using PackIT.Infrastructure.Queries;
 
 namespace PackIT.Infrastructure.EF.Queries.Handlers

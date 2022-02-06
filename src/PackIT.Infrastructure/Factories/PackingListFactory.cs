@@ -1,5 +1,5 @@
-﻿using PackIT.Infrastructure.Consts;
-using PackIT.Infrastructure.Entities;
+﻿using PackIT.Data.Entities;
+using PackIT.Infrastructure.Consts;
 using PackIT.Infrastructure.Policies;
 using PackIT.Infrastructure.ValueObjects;
 using System.Collections.Generic;

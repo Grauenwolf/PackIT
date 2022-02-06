@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PackIT.Data;
 using PackIT.Infrastructure.Commands.Handlers;
-using PackIT.Infrastructure.EF.Contexts;
 using PackIT.Infrastructure.EF.Options;
 using PackIT.Infrastructure.EF.Queries.Handlers;
 using PackIT.Infrastructure.EF.Repositories;

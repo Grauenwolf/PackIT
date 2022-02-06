@@ -1,9 +1,8 @@
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using PackIT.Infrastructure.EF.Contexts;
-using PackIT.Infrastructure.Entities;
+using PackIT.Data;
+using PackIT.Data.Entities;
 using PackIT.Infrastructure.Repositories;
-using PackIT.Infrastructure.ValueObjects;
 
 namespace PackIT.Infrastructure.EF.Repositories
 {
@@ -19,7 +18,7 @@ namespace PackIT.Infrastructure.EF.Repositories
         }
 
         public Task<PackingList> GetAsync(PackingListId id)
-            => _packingLists.Include("_items").SingleOrDefaultAsync(pl => pl.Id == id); 
+            => _packingLists.Include("_items").SingleOrDefaultAsync(pl => pl.Id == id);
 
         public async Task AddAsync(PackingList packingList)
         {

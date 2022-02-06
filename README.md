@@ -354,7 +354,11 @@ There's a lot to do here, so we'll take it in multiple rounds. First up is to br
 
 Since it's higher than the other two, we'll keep the Infrastructure project and roll the other two into it. Other than fixing up the namespaces, no other changes will be made at this point.
 
+## Round 12 - Sorting out the Data Access Layer
 
+As mentioned before, the data access layer is scattered all over the place.
+
+So to get a handle on it, a new `PackIT.Data` project will be created. Everything dealing with data access will be gathered into it.
 
 # PackIT
 PackIT is simple "packing list app" built on top of clean architecture and CQRS.

@@ -1,6 +1,6 @@
 using PackIT.Shared.Exceptions;
 
-namespace PackIT.Infrastructure.Exceptions
+namespace PackIT.Data.Entities
 {
     public class PackingItemNotFoundException : PackItException
     {

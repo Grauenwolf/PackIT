@@ -1,9 +1,9 @@
 using NSubstitute;
+using PackIT.Data.Entities;
 using PackIT.Infrastructure.Commands;
 using PackIT.Infrastructure.Commands.Handlers;
 using PackIT.Infrastructure.Consts;
 using PackIT.Infrastructure.DTO.External;
-using PackIT.Infrastructure.Entities;
 using PackIT.Infrastructure.Exceptions;
 using PackIT.Infrastructure.Factories;
 using PackIT.Infrastructure.Repositories;

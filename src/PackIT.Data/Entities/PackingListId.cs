@@ -1,7 +1,6 @@
-using PackIT.Infrastructure.Exceptions;
 using System;
 
-namespace PackIT.Infrastructure.ValueObjects
+namespace PackIT.Data.Entities
 {
     public record PackingListId
     {

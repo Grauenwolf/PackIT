@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using PackIT.Infrastructure.EF.Contexts;
+using PackIT.Data;
 
 namespace PackIT.Infrastructure.EF.Migrations
 {

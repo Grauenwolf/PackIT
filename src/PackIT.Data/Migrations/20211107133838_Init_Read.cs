@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace PackIT.Infrastructure.EF.Migrations
+namespace PackIT.Data.Migrations
 {
     public partial class Init_Read : Migration
     {

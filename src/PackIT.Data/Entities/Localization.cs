@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace PackIT.Infrastructure.ValueObjects
+namespace PackIT.Data.Entities
 {
     public record Localization(string City, string Country)
     {

@@ -1,5 +1,4 @@
-using PackIT.Infrastructure.Entities;
-using PackIT.Infrastructure.ValueObjects;
+using PackIT.Data.Entities;
 using System.Threading.Tasks;
 
 namespace PackIT.Infrastructure.Repositories

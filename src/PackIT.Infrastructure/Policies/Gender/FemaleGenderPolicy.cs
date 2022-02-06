@@ -1,4 +1,4 @@
-﻿using PackIT.Infrastructure.ValueObjects;
+﻿using PackIT.Data.Entities;
 using System.Collections.Generic;
 
 namespace PackIT.Infrastructure.Policies.Gender
