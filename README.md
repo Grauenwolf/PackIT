@@ -428,15 +428,15 @@ Another feature that can be removed are the "domain events". Aside from being me
 
 This in turn means we can also remove any class that inherits from `IDomainEvent`.
 
-Now that `AggregateRoot<T>` has been stripped of all interesting functionality, it can be deleted. The `Id` and `Version` property have been pulled up into `PackingList`. Actually incrementing the version number is handled by the `DbContext` in the `SavingChanges` event as shown below.
+Now that `AggregateRoot<T>` has been stripped of all interesting functionality, it can be deleted. The `Id` and `Version` property have been pulled up into `PackingList`. Actually incrementing the version number is handled by the `PackingListCommandService`.
 
-```
-private void WriteDbContext_SavingChanges(object sender, SavingChangesEventArgs e)
-{
-    foreach (var item in ChangeTracker.Entries().OfType<IHasVersion>())
-        item.Version += 1;
-}
-```
+Why not keep the version handling logic in `PackingList`? Because `PackingList` doesn't understand context. It can't tell the difference between when it's being loaded from a database and when some other code is manipulating it. Nor can it understand when multiple changes should be treated as a single logical transaction.
+
+The code tries to address this by moving the `Add` item method from `PackingList.Items` to `PackingList` itself. But this makes the code awkward, as that's not the normal pattern for .NET classes that have child collections.
+
+Later we can go back and make `PackingList` look like a more typical class.
+
+
 
 
 

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace PackIT.Data.Entities
 {
-    public class PackingList : IHasVersion
+    public class PackingList
     {
         public PackingListId Id { get; protected set; }
         public int Version { get; set; }

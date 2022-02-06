@@ -1,9 +1,9 @@
-﻿using PackIT.Data.Entities;
+﻿using System.Threading.Tasks;
+using PackIT.Data.Entities;
 using PackIT.Infrastructure.Exceptions;
 using PackIT.Infrastructure.Factories;
 using PackIT.Infrastructure.Repositories;
 using PackIT.Infrastructure.Services;
-using System.Threading.Tasks;
 
 namespace PackIT.Infrastructure.Commands.Handlers
 {
@@ -42,6 +42,8 @@ namespace PackIT.Infrastructure.Commands.Handlers
 
             var packingList = _factory.CreateWithDefaultItems(id, name, days, gender, weather.Temperature,
                 localization);
+
+            packingList.Version = 1;
 
             await _repository.AddAsync(packingList);
         }

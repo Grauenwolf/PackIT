@@ -1,7 +1,7 @@
-﻿using PackIT.Data.Entities;
+﻿using System.Threading.Tasks;
+using PackIT.Data.Entities;
 using PackIT.Infrastructure.Exceptions;
 using PackIT.Infrastructure.Repositories;
-using System.Threading.Tasks;
 
 namespace PackIT.Infrastructure.Commands.Handlers
 {
@@ -26,6 +26,7 @@ namespace PackIT.Infrastructure.Commands.Handlers
 
             var packingItem = new PackingItem(command.Name, command.Quantity);
             packingList.AddItem(packingItem);
+            packingList.Version += 1;
 
             await _repository.UpdateAsync(packingList);
         }
@@ -40,6 +41,7 @@ namespace PackIT.Infrastructure.Commands.Handlers
             }
 
             packingList.PackItem(command.Name);
+            packingList.Version += 1;
 
             await _repository.UpdateAsync(packingList);
         }
@@ -54,6 +56,7 @@ namespace PackIT.Infrastructure.Commands.Handlers
             }
 
             packingList.RemoveItem(command.Name);
+            packingList.Version += 1;
 
             await _repository.UpdateAsync(packingList);
         }
