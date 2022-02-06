@@ -360,6 +360,66 @@ As mentioned before, the data access layer is scattered all over the place.
 
 So to get a handle on it, a new `PackIT.Data` project will be created. Everything dealing with data access will be gathered into it.
 
+The sturucture will be simple. At the top you have the two DbContext classes. 
+
+In the `Entities` folder will be all of the entities. This means the read entities and the write entities, their value objects, their exceptions, and their mapping files. If you want to know anything about the `PackingItem` entity, there is now a single place to look.
+
+The `Events` folder will be kept intact. This deals with internal bookkeeping that's needed by the entities, but doesn't actually touch the database.
+
+The `Migrations` folder will likewise be kept intact. This folder tends to get rather messy and the only time someone needs to look at it is when the database schema changes.
+
+The `ReadConfiguration` and `WriteConfiguration` classes are a special case. They will be broken up into single-method classes. These classes will be placed inside the entities they refer to. For example,
+
+```
+public class PackingItemReadModel
+{
+    public Guid Id { get; set; }
+    public string Name { get; set; }
+    public uint Quantity { get; set; }
+    public bool IsPacked { get; set; }
+
+    public PackingListReadModel PackingList { get; set; }
+
+    internal sealed class Configuration : IEntityTypeConfiguration<PackingItemReadModel>
+    {
+        public void Configure(EntityTypeBuilder<PackingItemReadModel> builder)
+        {
+            builder.ToTable("PackingItems");
+        }
+    }
+}
+```
+
+Here is an example of using them in a DbContext:
+
+```
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    modelBuilder.HasDefaultSchema("packing");
+
+    modelBuilder.ApplyConfiguration(new PackingListReadModel.Configuration());
+    modelBuilder.ApplyConfiguration(new PackingItemReadModel.Configuration());
+}
+```
+
+Back in round XXX, we moved `PackingListDto AsDto()` into the class as a normal method. At the time, that was sensible because the entity and its DTO were in the same project. 
+
+Now that the application-level DTOs are in `Infrastructure` and the entities are in `Data`, that no longer works. So we have to convert it back into an extension method. However, this time we're going to call the extension class `Mapping`. 
+
+It is tempting to ditch the `AsDto` method entirely and just put a constructor on the `PackingListDto` class that accepts an entity. And that would be acceptable. But for now we'll stop here.
+
+### Classes that were not moved
+
+
+* `PostgresOptions` This class deals with reading the configuration file. Instead of pushing it down, we should consider pushing it up into `PackIT.Api` as that's what owns the configuration file.
+* `PackingListCommandService`, `PackingListQueryService` Service classes wrap the DAL classes and add business logic. So these doesn't belong in the Data tier.
+* `CreatePackingListWithItemsService` In addition to the above reason, this has dependencies on other services outside of the data tier.
+* Exceptions that are only thrown by service classes.
+* DTO classes, as they belong to the service classes that expose them.
+
+
+
+
 # PackIT
 PackIT is simple "packing list app" built on top of clean architecture and CQRS.
 
