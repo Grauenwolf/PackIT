@@ -535,6 +535,70 @@ To balance these goals in a library, you have to find a spot somewhere between t
 
 **Warning**: Avoid advice in the form of, "You should never have [more | less] than x classes per namespace". The risk is that in trying to meet an object rule such as the number of classes per folder, people tend to ignore the more important subjective rules such as "Keep related classes together". 
 
+## Round 16 - Removing PackingListId and PackingListName
+
+There is a philosophy called "Primitive Obsession" which claims that using primitive values such as integers and strings for properties is somehow wrong. And while it is true that there are times when wrapping these types to convey additional information or limit their range of values is beneficial, it must be done with care and consideration. 
+
+In this code, it appears that the author did it just because he was interested in the concept. Here is the first one.
+
+```
+public record PackingListId
+{
+    public Guid Value { get; }
+
+    public PackingListId(Guid value)
+    {
+        if (value == Guid.Empty)
+        {
+            throw new EmptyPackingListIdException();
+        }
+            
+        Value = value;
+    }
+        
+    public static implicit operator Guid(PackingListId id)
+        => id.Value;
+        
+    public static implicit operator PackingListId(Guid id)
+        => new(id);
+}
+```
+
+Immediately we see a problem. By making the conversion to and from `Guid` implicit, the use of this class is hidden. Which eliminates the static typing benefits of using this pattern. Consider this error:
+
+```
+var a = new PackingList(Guid.NewGuid(), "Example", new Localization("A City", "A State"));
+var b = new PackingItemReadModel() { Id = a.Id };
+```
+
+Since ` PackingItemReadModel.Id` accepts a `Guid`, and ` PackingList.Id` is convertible to `Guid`, there is nothing preventing one from assigning a packing list ID value to a packing item ID field. Which means we are no better off than if `PackingListId` didn’t exist in the first place.
+
+`PackingListId` also violates the following rules regarding implicit operators from the Framework Design Guidelines. 
+
+* DO NOT provide an implicit conversion operator if the conversion is potentially lossy.
+* DO NOT throw exceptions from implicit casts.
+* DO throw System.InvalidCastException if a call to a cast operator results in a lossy conversion and the contract of the operator does not allow lossy conversions.
+
+Yet another problem with the implicit conversion is that is makes this comparison ambiguous
+
+```
+if (aPackListId == aGuid)
+```
+
+The compiler doesn’t know if it should convert both sides to a `PackingListId` or a `Guid`. Had only one of the conversions been implicit the it would have worked.
+
+To make matters worse, the use of `PackingListId` and `PackingListName` is not consistent. They are not used in the command DTOs or read entities. The enhanced type safety benefits don’t exist if you aren’t going to actually use it.
+
+Though one may argue that not using it everywhere is actually a benefit. Since `PackingListId` and `PackingListName` are objects, their use requires allocating additional objects in memory. In a high-performance scenario, excessive memory allocation and the associated GC cost tends to be the most common and hardest problem to solve. The reason this is so difficult to address is that fixing bad memory practices in one area of the code is rarely enough. Since each individual mistake contributes a tiny amount to the overall problem, you have to fix many mistakes in order to see a significant gain. 
+
+There are two options for fixing this:
+
+1.	Rewrite the whole code base to use it consistently, while simultaneously addressing the memory and implicit conversion issues. 
+2.	Remove it from the small area where it is used and copy over the parameter validation it uses into `PackingList`.
+
+Given the relative difficulty and questionable merits of the pattern, we’re going with option 2. The change isn’t perfectly clean due to the non-standard validation, but that will have to be addressed at a later date.
+
+
 
 
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -8,15 +9,15 @@ namespace PackIT.Data.Entities
 {
     public class PackingList
     {
-        public PackingListId Id { get; protected set; }
+        public Guid Id { get; protected set; }
         public int Version { get; set; }
 
-        public PackingListName Name { get; init; }
+        public string Name { get; init; }
         public Localization Localization { get; init; }
 
         private readonly LinkedList<PackingItem> _items = new();
 
-        private PackingList(PackingListId id, PackingListName name, Localization localization, LinkedList<PackingItem> items)
+        private PackingList(Guid id, string name, Localization localization, LinkedList<PackingItem> items)
             : this(id, name, localization)
         {
             _items = items;
@@ -26,7 +27,7 @@ namespace PackIT.Data.Entities
         {
         }
 
-        public PackingList(PackingListId id, PackingListName name, Localization localization)
+        public PackingList(Guid id, string name, Localization localization)
         {
             Id = id;
             Name = name;
@@ -67,6 +68,7 @@ namespace PackIT.Data.Entities
             _items.Remove(item);
         }
 
+
         private PackingItem GetItem(string itemName)
         {
             var item = _items.SingleOrDefault(i => i.Name == itemName);
@@ -79,6 +81,15 @@ namespace PackIT.Data.Entities
             return item;
         }
 
+        public void ThrowIfInvalid()
+        {
+            if (Id == Guid.Empty)
+                throw new EmptyPackingListIdException();
+
+            if (string.IsNullOrWhiteSpace(Name))
+                throw new EmptyPackingListNameException();
+        }
+
         internal sealed class Configuration : IEntityTypeConfiguration<PackingList>
         {
             public void Configure(EntityTypeBuilder<PackingList> builder)
@@ -88,22 +99,10 @@ namespace PackIT.Data.Entities
                 var localizationConverter = new ValueConverter<Localization, string>(l => l.ToString(),
                     l => Localization.Create(l));
 
-                var packingListNameConverter = new ValueConverter<PackingListName, string>(pln => pln.Value,
-                    pln => new PackingListName(pln));
-
-                builder
-                    .Property(pl => pl.Id)
-                    .HasConversion(id => id.Value, id => new PackingListId(id));
-
                 builder
                     .Property(pl => pl.Localization)
                     .HasConversion(localizationConverter)
                     .HasColumnName("Localization");
-
-                builder
-                    .Property(pl => pl.Name)
-                    .HasConversion(packingListNameConverter)
-                    .HasColumnName("Name");
 
                 builder.HasMany(typeof(PackingItem), "_items");
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using PackIT.Data.Entities;
 using PackIT.Infrastructure.Commands.Factories.Policies;
@@ -12,10 +13,10 @@ namespace PackIT.Infrastructure.Commands.Factories
         public PackingListFactory(IEnumerable<IPackingItemsPolicy> policies)
             => _policies = policies;
 
-        public PackingList Create(PackingListId id, PackingListName name, Localization localization)
+        public PackingList Create(Guid id, string name, Localization localization)
             => new(id, name, localization);
 
-        public PackingList CreateWithDefaultItems(PackingListId id, PackingListName name, TravelDays days, Gender gender,
+        public PackingList CreateWithDefaultItems(Guid id, string name, TravelDays days, Gender gender,
             Temperature temperature, Localization localization)
         {
             var data = new PolicyData(days, gender, temperature, localization);

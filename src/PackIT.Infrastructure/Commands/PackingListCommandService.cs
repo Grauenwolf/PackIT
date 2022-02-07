@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using PackIT.Data;
 using PackIT.Data.Entities;
@@ -16,7 +17,7 @@ namespace PackIT.Infrastructure.Commands
             _writeDbContext = writeDbContext;
         }
 
-        Task<PackingList> GetAsync(PackingListId id)
+        Task<PackingList> GetAsync(Guid id)
         {
             return _writeDbContext.PackingLists
                 .Include("_items")
@@ -25,6 +26,8 @@ namespace PackIT.Infrastructure.Commands
 
         async Task UpdateAsync(PackingList packingList)
         {
+            packingList.ThrowIfInvalid();
+
             packingList.Version += 1;
             _writeDbContext.PackingLists.Update(packingList);
             await _writeDbContext.SaveChangesAsync();
@@ -88,6 +91,7 @@ namespace PackIT.Infrastructure.Commands
         }
         public async Task AddPackingListAsync(PackingList packingList)
         {
+            packingList.ThrowIfInvalid();
             packingList.Version = 1;
 
             await _writeDbContext.PackingLists.AddAsync(packingList);
