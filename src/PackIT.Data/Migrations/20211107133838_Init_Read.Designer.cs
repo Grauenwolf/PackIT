@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace PackIT.Data.Migrations
 {
-    [DbContext(typeof(ReadDbContext))]
+    [DbContext(typeof(PackITDbContext))]
     [Migration("20211107133838_Init_Read")]
     partial class Init_Read
     {

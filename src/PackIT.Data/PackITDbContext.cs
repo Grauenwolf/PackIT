@@ -3,11 +3,11 @@ using PackIT.Data.Entities;
 
 namespace PackIT.Data
 {
-    public sealed class WriteDbContext : DbContext
+    public sealed class PackITDbContext : DbContext
     {
         public DbSet<PackingList> PackingLists { get; set; }
 
-        public WriteDbContext(DbContextOptions<WriteDbContext> options) : base(options)
+        public PackITDbContext(DbContextOptions<PackITDbContext> options) : base(options)
         {
         }
 
@@ -18,7 +18,5 @@ namespace PackIT.Data
             modelBuilder.ApplyConfiguration(new PackingList.Configuration());
             modelBuilder.ApplyConfiguration(new PackingItem.Configuration());
         }
-
-
     }
 }

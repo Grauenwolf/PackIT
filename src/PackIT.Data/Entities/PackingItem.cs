@@ -1,15 +1,14 @@
-﻿
-using System;
+﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace PackIT.Data.Entities
 {
-    public record PackingItem
+    public class PackingItem
     {
-        public string Name { get; }
-        public uint Quantity { get; }
-        public bool IsPacked { get; init; }
+        public PackingItem()
+        {
+        }
 
         public PackingItem(string name, uint quantity, bool isPacked = false)
         {
@@ -23,16 +22,22 @@ namespace PackIT.Data.Entities
             IsPacked = isPacked;
         }
 
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public uint Quantity { get; set; }
+        public bool IsPacked { get; set; }
+
+        public PackingList PackingList { get; set; }
+
         internal sealed class Configuration : IEntityTypeConfiguration<PackingItem>
         {
             public void Configure(EntityTypeBuilder<PackingItem> builder)
             {
-                builder.Property<Guid>("Id");
-                builder.Property(pi => pi.Name);
-                builder.Property(pi => pi.Quantity);
-                builder.Property(pi => pi.IsPacked);
                 builder.ToTable("PackingItems");
             }
         }
+
+
     }
+
 }

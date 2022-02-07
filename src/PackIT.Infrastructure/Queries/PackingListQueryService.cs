@@ -10,9 +10,9 @@ namespace PackIT.Infrastructure.Queries
 {
     public sealed class PackingListQueryService
     {
-        private readonly DbSet<PackingListReadModel> _packingLists;
+        private readonly DbSet<PackingList> _packingLists;
 
-        public PackingListQueryService(ReadDbContext context)
+        public PackingListQueryService(PackITDbContext context)
             => _packingLists = context.PackingLists;
 
         public Task<PackingListDto> HandleAsync(GetPackingList query)

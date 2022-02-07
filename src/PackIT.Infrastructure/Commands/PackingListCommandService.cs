@@ -10,9 +10,9 @@ namespace PackIT.Infrastructure.Commands
     public sealed class PackingListCommandService : IPackingListCommandService
     {
 
-        private readonly WriteDbContext _writeDbContext;
+        private readonly PackITDbContext _writeDbContext;
 
-        public PackingListCommandService(WriteDbContext writeDbContext)
+        public PackingListCommandService(PackITDbContext writeDbContext)
         {
             _writeDbContext = writeDbContext;
         }
@@ -20,7 +20,7 @@ namespace PackIT.Infrastructure.Commands
         Task<PackingList> GetAsync(Guid id)
         {
             return _writeDbContext.PackingLists
-                .Include("_items")
+                .Include(x => x.Items)
                 .SingleOrDefaultAsync(pl => pl.Id == id);
         }
 

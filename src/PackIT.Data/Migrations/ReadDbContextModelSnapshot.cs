@@ -8,7 +8,7 @@ using PackIT.Data;
 
 namespace PackIT.Infrastructure.EF.Migrations
 {
-    [DbContext(typeof(ReadDbContext))]
+    [DbContext(typeof(PackITDbContext))]
     partial class ReadDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

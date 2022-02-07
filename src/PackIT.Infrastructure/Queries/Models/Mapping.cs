@@ -5,7 +5,7 @@ namespace PackIT.Infrastructure.Queries.Models
 {
     internal static class Mapping
     {
-        public static PackingListDto AsDto(this PackingListReadModel value)
+        public static PackingListDto AsDto(this PackingList value)
         {
             return new()
             {

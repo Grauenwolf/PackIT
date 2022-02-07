@@ -1,13 +1,30 @@
-using System.Linq;
+﻿using System.Linq;
 
 namespace PackIT.Data.Entities
 {
-    public record Localization(string City, string Country)
+    public class Localization
     {
+        public Localization()
+        {
+        }
+
+        public Localization(string city, string country)
+        {
+            City = city;
+            Country = country;
+        }
+
+        public string City { get; set; }
+        public string Country { get; set; }
+
         public static Localization Create(string value)
         {
             var splitLocalization = value.Split(',');
-            return new Localization(splitLocalization.First(), splitLocalization.Last());
+            return new Localization
+            {
+                City = splitLocalization.First(),
+                Country = splitLocalization.Last()
+            };
         }
 
         public override string ToString()

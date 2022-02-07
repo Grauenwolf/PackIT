@@ -7,9 +7,9 @@ namespace PackIT.Infrastructure.Commands
 {
     internal sealed class PostgresPackingListReadService : IPackingListReadService
     {
-        private readonly DbSet<PackingListReadModel> _packingList;
+        private readonly DbSet<PackingList> _packingList;
 
-        public PostgresPackingListReadService(ReadDbContext context)
+        public PostgresPackingListReadService(PackITDbContext context)
             => _packingList = context.PackingLists;
 
         public Task<bool> ExistsByNameAsync(string name)

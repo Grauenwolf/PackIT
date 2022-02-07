@@ -18,8 +18,7 @@ namespace PackIT.Infrastructure
             services.AddScoped<IPackingListReadService, PostgresPackingListReadService>();
 
             var options = configuration.GetSection("Postgres").Get<PostgresOptions>();
-            services.AddDbContext<ReadDbContext>(ctx => ctx.UseNpgsql(options.ConnectionString));
-            services.AddDbContext<WriteDbContext>(ctx => ctx.UseNpgsql(options.ConnectionString));
+            services.AddDbContext<PackITDbContext>(ctx => ctx.UseNpgsql(options.ConnectionString));
 
             IServiceCollection result = services;
             services.AddScoped<PackingListQueryService>();
