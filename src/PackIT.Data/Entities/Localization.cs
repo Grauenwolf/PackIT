@@ -17,17 +17,13 @@ namespace PackIT.Data.Entities
         public string City { get; set; }
         public string Country { get; set; }
 
-        public static Localization Create(string value)
+        public Localization(string value)
         {
             var splitLocalization = value.Split(',');
-            return new Localization
-            {
-                City = splitLocalization.First(),
-                Country = splitLocalization.Last()
-            };
+            City = splitLocalization.First();
+            Country = splitLocalization.Last();
         }
 
-        public override string ToString()
-            => $"{City},{Country}";
+        public override string ToString() => $"{City},{Country}";
     }
 }

@@ -8,7 +8,7 @@ namespace PackIT.Infrastructure.Commands.Factories
     {
         PackingList Create(Guid id, string name, Localization localization);
 
-        PackingList CreateWithDefaultItems(Guid id, string name, TravelDays days, Gender gender,
-            Temperature temperature, Localization localization);
+        PackingList CreateWithDefaultItems(Guid id, string name, ushort days, Gender gender,
+            double temperature, Localization localization);
     }
 }

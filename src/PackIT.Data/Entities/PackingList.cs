@@ -35,7 +35,7 @@ namespace PackIT.Data.Entities
 
                 builder
                     .Property(pl => pl.Localization)
-                    .HasConversion(l => l.ToString(), l => Localization.Create(l));
+                    .HasConversion(l => l.ToString(), l => new Localization(l));
 
                 builder
                     .HasMany(pl => pl.Items)

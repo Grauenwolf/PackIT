@@ -53,7 +53,7 @@ namespace PackIT.UnitTests.Application
 			_readService.ExistsByNameAsync(command.Name).Returns(false);
 			_weatherService.GetWeatherAsync(Arg.Any<Localization>()).Returns(new WeatherDto(12));
 			_factory.CreateWithDefaultItems(command.Id, command.Name, command.Days, command.Gender,
-				Arg.Any<Temperature>(), Arg.Any<Localization>()).Returns(default(PackingList));
+				Arg.Any<double>(), Arg.Any<Localization>()).Returns(default(PackingList));
 
 			var exception = await Record.ExceptionAsync(() => Act(command));
 

@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using PackIT.Data.Entities;
 using PackIT.Infrastructure.Commands.Factories;
+using PackIT.Infrastructure.Commands.Factories.Policies;
 using PackIT.Infrastructure.Services;
 
 namespace PackIT.Infrastructure.Commands.Models
@@ -36,6 +37,11 @@ namespace PackIT.Infrastructure.Commands.Models
             if (weather is null)
             {
                 throw new MissingLocalizationWeatherException(localization);
+            }
+
+            if (days is 0 or > 100)
+            {
+                throw new InvalidTravelDaysException(days);
             }
 
             var packingList = _factory.CreateWithDefaultItems(id, name, days, gender, weather.Temperature,

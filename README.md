@@ -662,6 +662,15 @@ Stop and test. If everything seems to work, then the `WriteDbContext` entities c
 
 Finally, we renamed the `ReadDbContext` entities to not have the `ReadModel` suffix and give the DbContext itself a nicer name.
 
+## Round 19 - Review Static Methods
+
+While there is nothing inherently wrong with static methods, in this project they tend to be associated with questionable design decisions. So at this point it wouldn’t hurt to just do a quick scan to see if there are any issues to be addressed.
+
+* Remove the static `Create` function in `Localization` and replace it with a normal constructor.
+* Delete the `Temperature` class. It has the problematic two-way implicit conversions that we saw in round 16.
+* Delete the `TravelDays` class for the same reason. Its validation will be moved elsewhere. 
+
+
 
 # PackIT
 PackIT is simple "packing list app" built on top of clean architecture and CQRS.

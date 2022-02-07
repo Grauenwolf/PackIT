@@ -16,8 +16,8 @@ namespace PackIT.Infrastructure.Commands.Factories
         public PackingList Create(Guid id, string name, Localization localization)
             => new(id, name, localization);
 
-        public PackingList CreateWithDefaultItems(Guid id, string name, TravelDays days, Gender gender,
-            Temperature temperature, Localization localization)
+        public PackingList CreateWithDefaultItems(Guid id, string name, ushort days, Gender gender,
+            double temperature, Localization localization)
         {
             var data = new PolicyData(days, gender, temperature, localization);
             var applicablePolicies = _policies.Where(p => p.IsApplicable(data));

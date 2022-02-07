@@ -2,6 +2,6 @@
 
 namespace PackIT.Infrastructure.Commands.Factories.Policies
 {
-    public record PolicyData(TravelDays Days, Gender Gender, Temperature Temperature,
+    public record PolicyData(ushort Days, Gender Gender, double Temperature,
         Localization Localization);
 }
