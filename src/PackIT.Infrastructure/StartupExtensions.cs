@@ -31,7 +31,7 @@ namespace PackIT.Infrastructure
         public static IServiceCollection AddPackITApplication(this IServiceCollection services)
         {
             services.AddSingleton<IPackingListFactory, PackingListFactory>();
-            services.AddScoped<PackingListCommandService>();
+            services.AddScoped<IPackingListCommandService, PackingListCommandService>();
             services.AddScoped<CreatePackingListWithItemsService>();
 
             services.Scan(b => b.FromAssemblies(typeof(IPackingItemsPolicy).Assembly)
