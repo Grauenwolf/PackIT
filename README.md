@@ -485,7 +485,7 @@ Even worse, nothing in the test verifies the data was actually saved to the data
 
 For now we'll leave the `IPackingListCommandService` interface in place. But the long-term plan should be to throw it away and build some proper integration tests. 
 
-## Round 15 - General Cleanup of PackIT.Infrastructure
+## Round 15 - General Organization of PackIT.Infrastructure
 
 This round is dedicated to moving things around in the Infrastructure project. This includes eliminating namespaces that are too small, breaking up files that contain multiple classes, moving classes so that they are close to the classes that depend on them, etc.
 
@@ -505,6 +505,36 @@ This round is dedicated to moving things around in the Infrastructure project. T
 * The model/DTO classes in `Queries` are moved into new namespace `Queries\Models`.
 * Files with multiple classes are split up.
 * Files are renamed to match the class name.
+
+
+### New Organization Map
+
+We’re now ready to document the layout of the project. This will go into each project’s readme file.
+
+PackIT.Data – DbContexts and related interfaces
++---Entities - Entities and the classes they depend on
+\---Migrations - Database deployment
+
+PackIT.Infrastructure – Entry-point code for the library
++---Commands - Services and interfaces needed for write operations
+|   +---Factories – Service for generating packing lists.
+|   |   \---Policies – Business rules that feed into the factory
+|   \---Models - Models needed for write operations
++---Queries - Services and interfaces needed for read operations
+|   \---Models - Models needed for read operations
+\---Services – Misc. services
+
+When organizing code, several competing goals have to be considered.
+
+1. An answer the question, "What folder has the class that does X?"
+2. The ability to find the class quickly once you are in the right folder.
+3. Not having to import too many namespaces to perform a task.
+4. Not having to too many things you don’t care about cluttering up code-completion lists. 
+
+To balance these goals in a library, you have to find a spot somewhere between the extremes of dumping everything in a single folder and using a separate namespace for each class. As such, there is often more than one 'solution' to this problem. And as the project evolves you may find the need to readjust the organization.
+
+**Warning**: Avoid advice in the form of, "You should never have [more | less] than x classes per namespace". The risk is that in trying to meet an object rule such as the number of classes per folder, people tend to ignore the more important subjective rules such as "Keep related classes together". 
+
 
 
 
