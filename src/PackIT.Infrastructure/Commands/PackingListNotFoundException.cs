@@ -3,7 +3,7 @@ using System;
 
 namespace PackIT.Infrastructure.Commands
 {
-    public class PackingListNotFoundException : PackItException
+    public class PackingListNotFoundException : BadRequestException
     {
         public Guid Id { get; }
 

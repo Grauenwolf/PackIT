@@ -2,7 +2,7 @@
 
 namespace PackIT.Data.Entities
 {
-    public class EmptyPackingListNameException : PackItException
+    public class EmptyPackingListNameException : BadRequestException
     {
         public EmptyPackingListNameException() : base("packing list name cannot be empty.")
         {

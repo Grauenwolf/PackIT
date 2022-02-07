@@ -2,7 +2,7 @@ using PackIT.Shared.Exceptions;
 
 namespace PackIT.Data.Entities
 {
-    public class PackingItemNotFoundException : PackItException
+    public class PackingItemNotFoundException : BadRequestException
     {
         public string ItemName { get; }
 

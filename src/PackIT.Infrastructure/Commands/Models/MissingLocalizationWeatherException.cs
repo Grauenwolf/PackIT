@@ -3,7 +3,7 @@ using PackIT.Shared.Exceptions;
 
 namespace PackIT.Infrastructure.Commands.Models
 {
-    public class MissingLocalizationWeatherException : PackItException
+    public class MissingLocalizationWeatherException : BadRequestException
     {
         public Localization Localization { get; }
 

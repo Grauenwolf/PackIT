@@ -2,7 +2,7 @@ using PackIT.Shared.Exceptions;
 
 namespace PackIT.Infrastructure.Commands.Factories.Policies
 {
-    public class InvalidTravelDaysException : PackItException
+    public class InvalidTravelDaysException : BadRequestException
     {
         public ushort Days { get; }
 

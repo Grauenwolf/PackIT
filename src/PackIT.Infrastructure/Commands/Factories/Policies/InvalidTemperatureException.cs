@@ -2,7 +2,7 @@ using PackIT.Shared.Exceptions;
 
 namespace PackIT.Infrastructure.Commands.Factories.Policies
 {
-    public class InvalidTemperatureException : PackItException
+    public class InvalidTemperatureException : BadRequestException
     {
         public double Value { get; }
 

@@ -599,6 +599,21 @@ There are two options for fixing this:
 Given the relative difficulty and questionable merits of the pattern, we’re going with option 2. The change isn’t perfectly clean due to the non-standard validation, but that will have to be addressed at a later date.
 
 
+## Round 17 - Exception Naming
+
+Consider these two facts:
+
+1. All of the custom exceptions inherit from `PackItException`.
+2. The middleware always converts a `PackItException` into a 400/Bad Request error.
+
+The name `PackItException` doesn’t actually mean anything to us. At first glance, it seems to be a vanity exception. Which is to say, an exception created just to advertise the name of the library.
+
+But it’s not. `PackItException` actually does mean something, namely that a Bad Request error will be returned. It thus follows that we should rename it `BadRequestException`.
+
+But we can take this a step further. We can create a generic `HttpStatusException` to act as the base class for `BadRequestException`. This gives a way to represent any exception that could potentially be turned into an error code.
+
+Adding a `StatusCode` property to `HttpStatusException` means that we can remove the hard-coded "400" from the `ExceptionMiddleware` class.
+
 
 
 

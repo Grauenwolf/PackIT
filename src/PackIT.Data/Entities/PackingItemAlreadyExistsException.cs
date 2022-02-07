@@ -2,7 +2,7 @@
 
 namespace PackIT.Data.Entities
 {
-    public class PackingItemAlreadyExistsException : PackItException
+    public class PackingItemAlreadyExistsException : BadRequestException
     {
         public string ListName { get; }
         public string ItemName { get; }

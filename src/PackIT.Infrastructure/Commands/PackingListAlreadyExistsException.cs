@@ -2,7 +2,7 @@ using PackIT.Shared.Exceptions;
 
 namespace PackIT.Infrastructure.Commands
 {
-    public class PackingListAlreadyExistsException : PackItException
+    public class PackingListAlreadyExistsException : BadRequestException
     {
         public string Name { get; }
 
