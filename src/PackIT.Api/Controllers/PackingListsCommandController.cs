@@ -8,9 +8,9 @@ namespace PackIT.Api.Controllers
     [Route("/api/PackingLists")]
     public class PackingListsCommandController : BaseController
     {
-        private readonly PackingListCommandService _handler;
+        private readonly IPackingListCommandService _handler;
 
-        public PackingListsCommandController(PackingListCommandService handler)
+        public PackingListsCommandController(IPackingListCommandService handler)
         {
             _handler = handler;
         }
