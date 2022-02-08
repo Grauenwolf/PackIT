@@ -15,28 +15,28 @@ namespace PackIT.Api.Controllers
             _handler = handler;
         }
 
-        [HttpPut("{packingListId}/items")]
+        [HttpPut("items")]
         public async Task<IActionResult> Put([FromBody] AddPackingItem command)
         {
             await _handler.AddPackingItemAsync(command);
             return Ok();
         }
 
-        [HttpPut("{packingListId:guid}/items/{name}/pack")]
+        [HttpPut("/items/pack")]
         public async Task<IActionResult> Put([FromBody] PackItem command)
         {
             await _handler.PackItemAsync(command);
             return Ok();
         }
 
-        [HttpDelete("{packingListId:guid}/items/{name}")]
+        [HttpDelete("/items")]
         public async Task<IActionResult> Delete([FromBody] RemovePackingItem command)
         {
             await _handler.RemovePackingItemAsync(command);
             return Ok();
         }
 
-        [HttpDelete("{id:guid}")]
+        [HttpDelete("")]
         public async Task<IActionResult> Delete([FromBody] RemovePackingList command)
         {
             await _handler.RemovePackingListAsync(command);

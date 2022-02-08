@@ -705,12 +705,33 @@ builder.OwnsOne(p => p.Localization);
 
 This will result in two additional columns in the database: `Localization_City` and `Localization_Country`.
 
+## Round 21 - Fixing the REST Routes
 
+An all-too-common design mistake is trying to follow an idealized REST pattern for routes. Developers will create routes such as `PUT /api/PackingLists/{PackingListId}` and then ask for the `PackingListId` a second time in the request body.
 
+This gives the server-side developer three options,
+
+1. Ignore the ID in the URL route.
+2. Ignore the ID in the request body.
+3. Check them both to see if they match.
+
+The client-side developer can't predict which option will be chosen, so they are to provide both just in case.
+
+### Fix
+
+The fix for this is easy, just remove the parameters from the route.
+
+```
+Old: [HttpPut("{packingListId}/items")]
+New: [HttpPut("items")]
+```
+
+These URLs aren't as 'pretty' as the originals, but it removes the ambiguity and the need to provide the same information twice.
 
 
 # PackIT
 PackIT is simple "packing list app" built on top of clean architecture and CQRS.
+
 
 
 
