@@ -670,6 +670,43 @@ While there is nothing inherently wrong with static methods, in this project the
 * Delete the `Temperature` class. It has the problematic two-way implicit conversions that we saw in round 16.
 * Delete the `TravelDays` class for the same reason. Its validation will be moved elsewhere. 
 
+## Round 20 - Fixing the Table Structure to Address Data Loss
+
+In the `PackingLists` table you won't find a city or country field. Instead, you'll find a `Localization` field that combines the two in an unreliable fashion.
+
+For example, say your city is "Portland, Maine" and your country is "USA". This will be stored in the database as "Portland, Maine, USA". But when you read it back out, you only get "Portland" and "USA". The `Localization` column is treated as a comma separated list, with only the first and last item being kept.
+
+```
+public Localization(string value)
+{
+    var splitLocalization = value.Split(',');
+    City = splitLocalization.First();
+    Country = splitLocalization.Last();
+}
+```
+
+In addition to the data loss, there is also the problem with data access. By using this pattern, you lose the ability to search by city or country alone. You could perform a `LIKE` query with a suffix match (e.g. `"Localization" LIKE '%,USA'`) but that is very expensive because it cannot be indexed.
+
+## Fix
+
+Replace the old mapping in `PackingList.Configuration`...
+
+```
+builder
+    .Property(pl => pl.Localization)
+    .HasConversion(l => l.ToString(), l => new Localization(l));
+```
+
+with the proper EF Core pattern for a child object that is owned by its parent.
+
+```
+builder.OwnsOne(p => p.Localization);
+```
+
+This will result in two additional columns in the database: `Localization_City` and `Localization_Country`.
+
+
+
 
 
 # PackIT

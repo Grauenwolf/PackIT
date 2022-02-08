@@ -18,7 +18,8 @@ namespace PackIT.Data.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Version = table.Column<int>(type: "integer", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: true),
-                    Localization = table.Column<string>(type: "text", nullable: true)
+                    Localization_City = table.Column<string>(type: "text", nullable: true),
+                    Localization_Country = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {

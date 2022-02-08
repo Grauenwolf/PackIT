@@ -21,7 +21,7 @@ namespace PackIT.Data.Migrations
                 .HasAnnotation("ProductVersion", "5.0.11")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-            modelBuilder.Entity("PackIT.Infrastructure.EF.Models.PackingItemReadModel", b =>
+            modelBuilder.Entity("PackIT.Data.Entities.PackingItem", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -46,13 +46,16 @@ namespace PackIT.Data.Migrations
                     b.ToTable("PackingItems");
                 });
 
-            modelBuilder.Entity("PackIT.Infrastructure.EF.Models.PackingListReadModel", b =>
+            modelBuilder.Entity("PackIT.Data.Entities.PackingList", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Localization")
+                    b.Property<string>("Localization_City")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Localization_Country")
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
@@ -66,16 +69,16 @@ namespace PackIT.Data.Migrations
                     b.ToTable("PackingLists");
                 });
 
-            modelBuilder.Entity("PackIT.Infrastructure.EF.Models.PackingItemReadModel", b =>
+            modelBuilder.Entity("PackIT.Data.Entities.PackingItem", b =>
                 {
-                    b.HasOne("PackIT.Infrastructure.EF.Models.PackingListReadModel", "PackingList")
+                    b.HasOne("PackIT.Data.Entities.PackingList", "PackingList")
                         .WithMany("Items")
                         .HasForeignKey("PackingListId");
 
                     b.Navigation("PackingList");
                 });
 
-            modelBuilder.Entity("PackIT.Infrastructure.EF.Models.PackingListReadModel", b =>
+            modelBuilder.Entity("PackIT.Data.Entities.PackingList", b =>
                 {
                     b.Navigation("Items");
                 });

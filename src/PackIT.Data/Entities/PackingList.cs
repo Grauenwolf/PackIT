@@ -34,12 +34,10 @@ namespace PackIT.Data.Entities
                 builder.HasKey(pl => pl.Id);
 
                 builder
-                    .Property(pl => pl.Localization)
-                    .HasConversion(l => l.ToString(), l => new Localization(l));
-
-                builder
                     .HasMany(pl => pl.Items)
                     .WithOne(pi => pi.PackingList);
+
+                builder.OwnsOne(p => p.Localization);
             }
 
         }
