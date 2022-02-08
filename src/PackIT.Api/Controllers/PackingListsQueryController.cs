@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PackIT.Infrastructure.Queries;
@@ -16,17 +17,17 @@ namespace PackIT.Api.Controllers
             _handler = handler;
         }
 
-        [HttpGet("{Id}")]
-        public async Task<ActionResult<PackingListDto>> Get([FromRoute] GetPackingList query)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<PackingListDto>> Get([FromRoute] Guid id)
         {
-            var result = await _handler.HandleAsync(query);
+            var result = await _handler.GetById(id);
             return OkOrNotFound(result);
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PackingListDto>>> Get([FromQuery] SearchPackingLists query)
+        public async Task<ActionResult<IEnumerable<PackingListDto>>> Get([FromQuery] string searchPhrase)
         {
-            var result = await _handler.HandleAsync(query);
+            var result = await _handler.Search(searchPhrase);
             return OkOrNotFound(result);
         }
 

@@ -728,6 +728,16 @@ New: [HttpPut("items")]
 
 These URLs aren't as 'pretty' as the originals, but it removes the ambiguity and the need to provide the same information twice.
 
+## Round 22 - Remove Single-Property Classes
+
+Single-property classes are something that should be reviewed. They are not necessarily wrong, but they are suspect. Consider the get-by-id data flow.
+
+1. The client packs the ID into a URL as a `Guid`.
+2. The controller repacks the ID into a `GetPackingList` object.
+3. The service unpacks the `GetPackingList` object back into a `Guid` so it can be used in an EF query.
+
+A long time ago the `GetPackingList` object was needed for the dispatcher scheme. But now that we are calling functions using C#'s function calling syntax, it no longer needs to exist.
+
 
 # PackIT
 PackIT is simple "packing list app" built on top of clean architecture and CQRS.

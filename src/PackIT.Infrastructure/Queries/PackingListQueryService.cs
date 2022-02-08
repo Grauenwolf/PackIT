@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -15,26 +16,26 @@ namespace PackIT.Infrastructure.Queries
         public PackingListQueryService(PackITDbContext context)
             => _packingLists = context.PackingLists;
 
-        public Task<PackingListDto> HandleAsync(GetPackingList query)
+        public Task<PackingListDto> GetById(Guid id)
         {
             return _packingLists
                 .Include(pl => pl.Items)
-                .Where(pl => pl.Id == query.Id)
+                .Where(pl => pl.Id == id)
                 .Select(pl => pl.AsDto())
                 .AsNoTracking()
                 .SingleOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<PackingListDto>> HandleAsync(SearchPackingLists query)
+        public async Task<IEnumerable<PackingListDto>> Search(string searchPhrase)
         {
             var dbQuery = _packingLists
                 .Include(pl => pl.Items)
                 .AsQueryable();
 
-            if (query.SearchPhrase is not null)
+            if (!string.IsNullOrEmpty(searchPhrase))
             {
                 dbQuery = dbQuery.Where(pl =>
-                    Microsoft.EntityFrameworkCore.EF.Functions.ILike(pl.Name, $"%{query.SearchPhrase}%"));
+                    Microsoft.EntityFrameworkCore.EF.Functions.ILike(pl.Name, $"%{searchPhrase}%"));
             }
 
             return await dbQuery
